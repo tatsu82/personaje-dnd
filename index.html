@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hechicero de Hielo — Compañero de Juego</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#04111c;--panel:#071825;--panel2:#091f2e;
+  --border:rgba(80,180,230,0.18);--border-bright:rgba(0,200,255,0.5);
+  --ice:#a8dff5;--ice2:#4fb8e0;--ice3:#1a7aaa;--accent:#00cfff;
+  --gold:#c8a84b;--text:#cde8f7;--dim:#6a9eb8;--frost:#e8f6ff;
+  --danger:#e05555;--safe:#4ecb7a;--warn:#e0a030;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Crimson Text',serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 10%,rgba(0,160,220,0.07) 0%,transparent 55%),radial-gradient(ellipse at 85% 90%,rgba(0,100,180,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:12px;}
+.header{text-align:center;padding:24px 16px 16px;}
+.char-name{font-family:'Cinzel Decorative',serif;font-size:1.9rem;color:var(--frost);text-shadow:0 0 30px rgba(0,207,255,0.7);letter-spacing:3px;}
+.char-sub{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:5px;color:var(--ice2);margin-top:4px;text-transform:uppercase;}
+.tabs{display:flex;gap:4px;margin:14px 0 10px;border-bottom:1px solid var(--border);padding-bottom:0;flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;padding:8px 12px 10px;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;}
+.tab:hover{color:var(--ice);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.page{display:none;}.page.active{display:block;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;margin-bottom:10px;}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ice3),var(--accent),var(--ice3),transparent);}
+.ptitle{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+/* Resource boxes */
+.res-box{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+.res-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:6px;}
+.res-value{font-family:'Cinzel Decorative',serif;font-size:2rem;font-weight:700;line-height:1;color:var(--frost);text-shadow:0 0 15px rgba(0,207,255,0.4);}
+.res-controls{display:flex;justify-content:center;gap:6px;margin-top:8px;}
+.btn-sm{width:28px;height:28px;border-radius:50%;border:1px solid var(--border-bright);background:rgba(0,207,255,0.08);color:var(--accent);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:'Cinzel',serif;}
+.btn-sm:hover{background:rgba(0,207,255,0.25);}
+.btn-sm.d{border-color:var(--danger);color:var(--danger);}
+.btn-sm.d:hover{background:rgba(224,85,85,0.2);}
+.btn-sm.sm{font-size:0.65rem;width:32px;border-radius:6px;}
+/* HP bar */
+.hp-bar-bg{height:6px;background:rgba(0,0,0,0.5);border-radius:3px;overflow:hidden;border:1px solid var(--border);margin:6px 0 2px;}
+.hp-bar-fill{height:100%;border-radius:3px;transition:width 0.3s,background 0.3s;}
+/* Slots */
+.slot-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--accent);background:rgba(0,207,255,0.15);box-shadow:0 0 8px rgba(0,207,255,0.3);cursor:pointer;transition:all 0.2s;display:inline-block;}
+.slot-dot.used{background:transparent;border-color:rgba(80,130,160,0.3);box-shadow:none;}
+.sp-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--ice2);background:rgba(0,180,230,0.2);cursor:pointer;transition:all 0.2s;box-shadow:0 0 6px rgba(0,180,230,0.3);display:inline-block;}
+.sp-dot.used{background:transparent;border-color:rgba(80,130,160,0.25);box-shadow:none;}
+/* Spell cards */
+.spell-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden;transition:border-color 0.2s;}
+.spell-card:hover{border-color:rgba(0,207,255,0.35);}
+.spell-hdr{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;}
+.spell-icon{font-size:1.3rem;flex-shrink:0;}
+.spell-info{flex:1;}
+.spell-name{font-family:'Cinzel',serif;font-size:0.85rem;color:var(--frost);margin-bottom:2px;}
+.spell-quick{font-size:0.72rem;color:var(--dim);font-style:italic;}
+.badges{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.badge{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:1px;padding:2px 6px;border-radius:3px;text-transform:uppercase;white-space:nowrap;}
+.bc{background:rgba(74,163,209,0.12);color:var(--ice2);border:1px solid rgba(74,163,209,0.25);}
+.b1{background:rgba(0,207,255,0.1);color:var(--accent);border:1px solid rgba(0,207,255,0.2);}
+.bd{background:rgba(224,85,85,0.1);color:#ff8080;border:1px solid rgba(224,85,85,0.2);}
+.bk{background:rgba(200,168,75,0.1);color:var(--gold);border:1px solid rgba(200,168,75,0.2);}
+.ba{background:rgba(78,203,122,0.1);color:var(--safe);border:1px solid rgba(78,203,122,0.2);}
+.spell-body{display:none;padding:0 12px 12px;border-top:1px solid var(--border);}
+.spell-body.open{display:block;}
+.srow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0;}
+.sbox{background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:6px;padding:6px 4px;text-align:center;}
+.slabel{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:1px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:3px;}
+.sval{font-family:'Cinzel',serif;font-size:0.8rem;color:var(--ice);font-weight:600;}
+.sdesc{font-size:0.82rem;color:var(--dim);line-height:1.6;}
+.stip{margin-top:8px;padding:8px 10px;background:rgba(0,207,255,0.05);border-left:2px solid var(--accent);border-radius:0 4px 4px 0;font-size:0.75rem;color:var(--ice2);font-style:italic;}
+.use-btn{margin-top:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border-radius:5px;cursor:pointer;transition:all 0.2s;}
+.use-btn:hover{background:rgba(0,207,255,0.22);}
+/* Attacks */
+.atk-row{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition:border-color 0.2s;}
+.atk-row:hover{border-color:rgba(0,207,255,0.3);}
+.atk-name{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--frost);margin-bottom:2px;}
+.atk-sub{font-size:0.72rem;color:var(--dim);font-style:italic;}
+.atk-stat{text-align:center;min-width:52px;}
+.atk-lbl{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:1px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:2px;}
+.atk-val{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:var(--accent);}
+/* Death saves */
+.ds-dot{width:20px;height:20px;border-radius:50%;border:2px solid;cursor:pointer;transition:all 0.2s;display:inline-block;}
+.ds-dot.s{border-color:var(--safe);}
+.ds-dot.s.f{background:var(--safe);box-shadow:0 0 8px var(--safe);}
+.ds-dot.x{border-color:var(--danger);}
+.ds-dot.x.f{background:var(--danger);box-shadow:0 0 8px var(--danger);}
+/* Stats */
+.stat-box{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;transition:border-color 0.2s;}
+.stat-box.hl{border-color:rgba(0,207,255,0.35);}
+.stat-name{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:4px;}
+.stat-mod{font-family:'Cinzel Decorative',serif;font-size:1.6rem;font-weight:700;color:var(--frost);line-height:1;}
+.stat-box.hl .stat-mod{color:var(--accent);text-shadow:0 0 12px var(--accent);}
+.stat-score{font-size:0.7rem;color:var(--dim);margin-top:2px;}
+/* Skills */
+.sk-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:4px;transition:background 0.15s;}
+.sk-row:hover{background:rgba(0,207,255,0.04);}
+.sk-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--border-bright);flex-shrink:0;}
+.sk-dot.f{background:var(--accent);border-color:var(--accent);box-shadow:0 0 5px var(--accent);}
+.sk-name{flex:1;font-size:0.8rem;color:var(--dim);}
+.sk-attr{font-size:0.6rem;color:rgba(106,158,184,0.5);}
+.sk-val{font-family:'Cinzel',serif;font-size:0.82rem;font-weight:600;color:var(--text);min-width:24px;text-align:right;}
+.sk-row.p .sk-name{color:var(--text);}.sk-row.p .sk-val{color:var(--accent);}
+/* Traits */
+.trait-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;}
+.trait-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.trait-text{font-size:0.82rem;color:var(--dim);line-height:1.6;}
+.trait-text strong{color:var(--ice);}
+/* Equipment */
+.eq-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;}
+.eq-name{font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);flex:1;}
+.eq-qty{font-size:0.72rem;color:var(--dim);}
+/* Divider */
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent);margin:12px 0;}
+/* Notes */
+.notes{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Crimson Text',serif;font-size:0.9rem;padding:10px;resize:vertical;min-height:80px;outline:none;transition:border-color 0.2s;}
+.notes:focus{border-color:var(--accent);}
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:rgba(7,24,37,0.95);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:2px;padding:10px 18px;border-radius:6px;z-index:100;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+/* Info box */
+.info{background:rgba(0,207,255,0.05);border:1px solid rgba(0,207,255,0.15);border-radius:8px;padding:10px 14px;font-size:0.78rem;color:var(--ice2);margin-bottom:12px;}
+@media(max-width:600px){
+  .grid3{grid-template-columns:1fr 1fr;}
+  .srow{grid-template-columns:repeat(2,1fr);}
+  .char-name{font-size:1.4rem;}
+  .grid2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div style="font-size:2.5rem;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(0,200,255,0.7))">❄🐉</div>
+  <div class="char-name">Aethon Vyreth</div>
+  <div class="char-sub">Hechicero 2 · Élfico · Origen Dracónico · Sangre de Hielo · Héroe del Pueblo</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showPage('combate',this)">⚔ Combate</button>
+  <button class="tab" onclick="showPage('conjuros',this)">✨ Conjuros</button>
+  <button class="tab" onclick="showPage('stats',this)">📊 Stats</button>
+  <button class="tab" onclick="showPage('rasgos',this)">🐉 Rasgos</button>
+  <button class="tab" onclick="showPage('trasfondo',this)">🏘 Trasfondo</button>
+  <button class="tab" onclick="showPage('equipo',this)">🎒 Equipo</button>
+</div>
+
+<!-- ===== COMBATE ===== -->
+<div id="page-combate" class="page active">
+
+  <div class="grid3" style="margin-bottom:10px;">
+    <div class="res-box">
+      <span class="res-label">❤ Puntos de Golpe</span>
+      <div class="res-value" id="hp-val">19</div>
+      <div class="hp-bar-bg"><div class="hp-bar-fill" id="hp-bar" style="width:100%;background:linear-gradient(90deg,#1a7aaa,#00cfff);"></div></div>
+      <div class="res-controls">
+        <button class="btn-sm d sm" onclick="changeHP(-5)">−5</button>
+        <button class="btn-sm d" onclick="changeHP(-1)">−</button>
+        <button class="btn-sm" onclick="changeHP(1)">+</button>
+        <button class="btn-sm sm" onclick="changeHP(5)">+5</button>
+      </div>
+      <div style="font-size:0.65rem;color:var(--dim);margin-top:4px;font-family:'Cinzel',serif;">MAX: 19</div>
+    </div>
+    <div class="res-box">
+      <span class="res-label">🛡 Clase de Armadura</span>
+      <div class="res-value" style="color:var(--accent);text-shadow:0 0 20px var(--accent);">18</div>
+      <div style="font-size:0.7rem;color:var(--dim);margin-top:8px;">18 (anotado en hoja)</div>
+      <div style="font-size:0.65rem;color:var(--ice2);margin-top:4px;font-style:italic;">Escamas dracónicas</div>
+    </div>
+    <div class="res-box">
+      <span class="res-label">⚡ Inic. / Velocidad</span>
+      <div style="display:flex;justify-content:center;gap:16px;align-items:flex-end;margin-top:6px;">
+        <div><div class="res-value" style="font-size:1.4rem;">+5</div><div style="font-size:0.6rem;color:var(--dim);font-family:'Cinzel',serif;">INIC.</div></div>
+        <div><div class="res-value" style="font-size:1.4rem;">36</div><div style="font-size:0.6rem;color:var(--dim);font-family:'Cinzel',serif;">PIES</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">✦ Recursos de Magia</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);min-width:80px;">Espacios N1</span>
+      <div id="slots-n1" style="display:flex;gap:6px;">
+        <div class="slot-dot" onclick="toggleSlot(this,'n1')"></div>
+        <div class="slot-dot" onclick="toggleSlot(this,'n1')"></div>
+        <div class="slot-dot" onclick="toggleSlot(this,'n1')"></div>
+      </div>
+      <span style="font-size:0.7rem;color:var(--dim);" id="slots-n1-count">3 / 3</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);min-width:80px;">Hechicería</span>
+      <div id="sp-dots" style="display:flex;gap:6px;">
+        <div class="sp-dot" onclick="toggleSP(this)"></div>
+        <div class="sp-dot" onclick="toggleSP(this)"></div>
+      </div>
+      <span style="font-size:0.7rem;color:var(--dim);" id="sp-count">2 / 2</span>
+    </div>
+    <div style="background:rgba(0,0,0,0.2);border-radius:6px;padding:8px;font-size:0.75rem;color:var(--dim);line-height:1.7;">
+      💡 <strong style="color:var(--ice2)">Conjuro Potenciado:</strong> 1 punto → retirar hasta 3 dados de daño<br>
+      💡 <strong style="color:var(--ice2)">Conjuro Cuidadoso:</strong> 1 punto → aliados ignoran área de tus conjuros
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+      <button onclick="resetResources()" style="background:rgba(200,168,75,0.1);border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;padding:6px 12px;border-radius:4px;cursor:pointer;text-transform:uppercase;">↺ Descanso Largo</button>
+      <button onclick="fullReset()" style="background:rgba(224,85,85,0.1);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;padding:6px 12px;border-radius:4px;cursor:pointer;text-transform:uppercase;">🗑 Nueva Partida</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">⚔ Ataques — CD: <span style="color:var(--accent)">14</span> · Conjuro: <span style="color:var(--accent)">+6</span> · Comp: <span style="color:var(--accent)">+2</span></div>
+    <div class="atk-row">
+      <div style="font-size:1.5rem;">🔮</div>
+      <div style="flex:1;"><div class="atk-name">Ataque de Conjuro</div><div class="atk-sub">Toque Gélido · Rayo de Escarcha · Saeta de Fuego</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Tirada</span><div class="atk-val">d20+6</div></div>
+    </div>
+    <div class="atk-row">
+      <div style="font-size:1.5rem;">🗡</div>
+      <div style="flex:1;"><div class="atk-name">Daga</div><div class="atk-sub">CC o arrojadiza · 20/60 pies (4/12 casillas) · finesse</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Ataque</span><div class="atk-val">+5</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d4+3 per.</div></div>
+    </div>
+    <div class="atk-row">
+      <div style="font-size:1.5rem;">🏹</div>
+      <div style="flex:1;"><div class="atk-name">Ballesta Ligera</div><div class="atk-sub">80/320 pies (16/64 casillas) · 2 manos · 20 virotes</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Ataque</span><div class="atk-val">+5</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d8+3 per.</div></div>
+    </div>
+    <div class="atk-row">
+      <div style="font-size:1.5rem;">🪵</div>
+      <div style="flex:1;"><div class="atk-name">Gran Clava (2 manos)</div><div class="atk-sub">Cuerpo a cuerpo</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Ataque</span><div class="atk-val">+2</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d8 cont.</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">💀 Salvaciones de Muerte — Solo cuando estás en 0 PG</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--safe);min-width:65px;">✓ Éxitos</span>
+      <div style="display:flex;gap:6px;" id="ds-s">
+        <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
+        <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
+        <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--danger);min-width:65px;">✗ Fallos</span>
+      <div style="display:flex;gap:6px;" id="ds-x">
+        <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
+        <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
+        <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
+      </div>
+    </div>
+    <div style="font-size:0.72rem;color:var(--dim);margin-top:8px;font-style:italic;">3 éxitos = estabilizado · 3 fallos = muerte</div>
+    <button onclick="resetDS()" style="margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;padding:4px 10px;border-radius:4px;cursor:pointer;text-transform:uppercase;">Resetear</button>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">📝 Notas de Sesión</div>
+    <textarea class="notes" placeholder="Anotá condiciones activas, objetivos, pistas, nombre de NPCs..."></textarea>
+  </div>
+</div>
+
+<!-- ===== CONJUROS ===== -->
+<div id="page-conjuros" class="page">
+  <div class="info">🎯 <strong>CD Conjuros: 14</strong> · <strong>Ataque de conjuro: +6</strong> · Los trucos son <strong>uso ilimitado</strong> · Tocá cada conjuro para ver todos los detalles</div>
+
+  <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;">❄ Trucos — Sin límite de usos</div>
+
+  <!-- TOQUE GELIDO -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('tg')">
+      <div class="spell-icon">💀</div>
+      <div class="spell-info">
+        <div class="spell-name">Toque Gélido</div>
+        <div class="spell-quick">Ataque d20+6 · 120 pies (24 casillas) · 1d8 necrótico · niega curación</div>
+      </div>
+      <div class="badges"><span class="badge bc">Truco</span><span class="badge bd">Daño</span><span class="badge bk">Control</span></div>
+    </div>
+    <div class="spell-body" id="spell-tg">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">120 pies (24 cas.)</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">1 asalto</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Cómo lanzar</span><div class="sval">d20+6 vs CA</div></div>
+        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#ff8080;">1d8 nec.</div></div>
+        <div class="sbox" style="grid-column:span 2"><span class="slabel">Efecto extra</span><div class="sval" style="color:var(--gold);">Sin curación hasta tu turno</div></div>
+      </div>
+      <div class="sdesc">Creás una mano esquelética que agarra al enemigo. Si impactás, sufre <strong style="color:#ff8080">1d8 de daño necrótico</strong> y <strong style="color:var(--ice)">no puede recuperar PG</strong> hasta tu próximo turno. Vs no-muertos: además tienen desventaja para atacarte.</div>
+      <div class="stip">💡 <strong>Cuándo usarlo:</strong> Contra enemigos que se curan o regeneran. El 1d8 es necrótico (no frío), pero la negación de curación es letal contra jefes.</div>
+    </div>
+  </div>
+
+  <!-- RAYO DE ESCARCHA -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('re')">
+      <div class="spell-icon">❄</div>
+      <div class="spell-info">
+        <div class="spell-name">Rayo de Escarcha</div>
+        <div class="spell-quick">Ataque d20+6 · 60 pies (12 casillas) · 1d8 frío · reduce velocidad 10 pies</div>
+      </div>
+      <div class="badges"><span class="badge bc">Truco</span><span class="badge bd">Daño</span><span class="badge bk">Control</span></div>
+    </div>
+    <div class="spell-body" id="spell-re">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">60 pies (12 cas.)</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Cómo lanzar</span><div class="sval">d20+6 vs CA</div></div>
+        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#80d4ff;">1d8 frío</div></div>
+        <div class="sbox" style="grid-column:span 2"><span class="slabel">Efecto extra</span><div class="sval" style="color:var(--gold);">Vel. −10 pies (2 cas.) hasta tu turno</div></div>
+      </div>
+      <div class="sdesc">Un rayo blancoazulado sale disparado hacia el objetivo. Si impactás, sufre <strong style="color:#80d4ff">1d8 de daño por frío</strong> y su <strong style="color:var(--ice)">velocidad se reduce 10 pies (2 casillas)</strong> hasta el inicio de tu próximo turno.</div>
+      <div class="stip">💡 <strong>Tu truco más temático.</strong> Usalo para ralentizar enemigos que vienen hacia vos. Tu sangre de dragón de hielo lo hace sentir propio.</div>
+    </div>
+  </div>
+
+  <!-- SAETA DE FUEGO -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('sf')">
+      <div class="spell-icon">🔥</div>
+      <div class="spell-info">
+        <div class="spell-name">Saeta de Fuego</div>
+        <div class="spell-quick">Ataque d20+6 · 120 pies (24 casillas) · 1d10 fuego — mayor daño de trucos</div>
+      </div>
+      <div class="badges"><span class="badge bc">Truco</span><span class="badge bd">Mayor Daño</span></div>
+    </div>
+    <div class="spell-body" id="spell-sf">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">120 pies (24 cas.)</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Cómo lanzar</span><div class="sval">d20+6 vs CA</div></div>
+        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#ffaa44;">1d10 fuego</div></div>
+        <div class="sbox" style="grid-column:span 2"><span class="slabel">Extra</span><div class="sval">Prende objetos inflamables</div></div>
+      </div>
+      <div class="sdesc">Arrojás una mota de fuego. Con un impacto, el objetivo sufre <strong style="color:#ffaa44">1d10 de daño por fuego</strong>. Objetos inflamables se prenden si no están sujetados.</div>
+      <div class="stip">💡 <strong>Mayor daño sin gastar recursos.</strong> Puro daño a máxima distancia. Ojo: algunos enemigos resisten el fuego.</div>
+    </div>
+  </div>
+
+  <!-- PRESTIDIGITACIÓN -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('pre')">
+      <div class="spell-icon">✨</div>
+      <div class="spell-info">
+        <div class="spell-name">Prestidigitación</div>
+        <div class="spell-quick">Sin tirada · 10 pies · Efectos mágicos menores · hasta 1h</div>
+      </div>
+      <div class="badges"><span class="badge bc">Truco</span></div>
+    </div>
+    <div class="spell-body" id="spell-pre">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">10 pies</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Hasta 1 hora</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="sdesc">Efectos mágicos menores a voluntad: encender/apagar velas, limpiar o ensuciar un objeto, enfriar o calentar algo pequeño, crear un sonido, un olor leve, o una imagen ilusoria del tamaño de tu mano (dura 1h), marcar un objeto.</div>
+      <div class="stip">💡 <strong>Roleplay puro.</strong> Enfriar tu bebida, secar tu ropa, crear un sonido de distracción. Fuera de combate es muy útil.</div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+  <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;">🔮 Conjuros Nivel 1 — Gastan espacio de conjuro</div>
+
+  <!-- PROYECTIL MAGICO -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('pm')">
+      <div class="spell-icon">⚡</div>
+      <div class="spell-info">
+        <div class="spell-name">Proyectil Mágico</div>
+        <div class="spell-quick">SIN TIRADA · 120 pies (24 casillas) · 3×(1d4+1) fuerza — NUNCA FALLA</div>
+      </div>
+      <div class="badges"><span class="badge b1">Nivel 1</span><span class="badge ba">Auto</span></div>
+    </div>
+    <div class="spell-body" id="spell-pm">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">120 pies (24 cas.)</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="srow">
+        <div class="sbox" style="grid-column:span 2"><span class="slabel">Cómo lanzar</span><div class="sval" style="color:var(--safe);">SIN TIRADA — impacto automático</div></div>
+        <div class="sbox" style="grid-column:span 2"><span class="slabel">Daño</span><div class="sval" style="color:var(--safe);">3 × (1d4+1) fuerza</div></div>
+      </div>
+      <div class="sdesc">Creás <strong style="color:var(--safe)">3 dardos brillantes de fuerza mágica</strong>. Cada uno impacta automáticamente. Podés dirigirlos todos a un objetivo o distribuirlos entre varios.</div>
+      <div class="stip">💡 <strong>Tu seguro de vida.</strong> No importa la CA — siempre impacta. Con Conjuro Potenciado (1 pto hechicería) retirás hasta 3 dados.</div>
+      <button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>
+    </div>
+  </div>
+
+  <!-- MANOS ARDIENTES -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('ma')">
+      <div class="spell-icon">🔥</div>
+      <div class="spell-info">
+        <div class="spell-name">Manos Ardientes</div>
+        <div class="spell-quick">Salvación Des CD14 · Personal — cono 15 pies (3 casillas) · 3d6 fuego</div>
+      </div>
+      <div class="badges"><span class="badge b1">Nivel 1</span><span class="badge bd">Área</span></div>
+    </div>
+    <div class="spell-body" id="spell-ma">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">Personal (cono 15 pies, 3 cas.)</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Salvación</span><div class="sval">Des CD 14</div></div>
+        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#ffaa44;">3d6 fuego</div></div>
+        <div class="sbox"><span class="slabel">Si falla</span><div class="sval">Daño completo</div></div>
+        <div class="sbox"><span class="slabel">Si pasa</span><div class="sval">Mitad</div></div>
+      </div>
+      <div class="sdesc">Llamas en cono de 15 pies (3 casillas) desde tus manos. <strong style="color:#ffaa44">Todos los enemigos</strong> en el área hacen salvación de Destreza contra CD 14. Fallo = 3d6 fuego completo. Éxito = mitad. Prende objetos inflamables.</div>
+      <div class="stip">💡 <strong>Usalo en grupos.</strong> 3+ enemigos juntos = devastador. Con Conjuro Cuidadoso (1 pto hechicería) tus aliados quedan a salvo del cono.</div>
+      <button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>
+    </div>
+  </div>
+
+  <!-- ONDA ATRONADORA -->
+  <div class="spell-card">
+    <div class="spell-hdr" onclick="toggleSpell('oa')">
+      <div class="spell-icon">💨</div>
+      <div class="spell-info">
+        <div class="spell-name">Onda Atronadora</div>
+        <div class="spell-quick">Salvación Con CD14 · Personal — cubo 15 pies (3 casillas) · 2d8 sónico + empuja</div>
+      </div>
+      <div class="badges"><span class="badge b1">Nivel 1</span><span class="badge bd">Daño</span><span class="badge bk">Empuja</span></div>
+    </div>
+    <div class="spell-body" id="spell-oa">
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">Personal (cubo 15 pies, 3 cas.)</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
+        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
+      </div>
+      <div class="srow">
+        <div class="sbox"><span class="slabel">Salvación</span><div class="sval">Con CD 14</div></div>
+        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#aaddff;">2d8 sónico</div></div>
+        <div class="sbox"><span class="slabel">Si falla</span><div class="sval">Daño + 10 pies emp.</div></div>
+        <div class="sbox"><span class="slabel">Si pasa</span><div class="sval">Mitad</div></div>
+      </div>
+      <div class="sdesc">Onda desde vos. Criaturas en el cubo de 15 pies (3 casillas) tiran salvación de Constitución CD 14. <strong style="color:#aaddff">Fallo:</strong> 2d8 sónico + empujadas 10 pies (2 casillas) lejos de vos. <strong style="color:#aaddff">Éxito:</strong> solo mitad. Se escucha hasta 300 pies (60 casillas, 90m).</div>
+      <div class="stip">💡 <strong>Tu salvavidas si te rodean.</strong> Aleja a todos los que te encierran. Reposicioná enemigos antes de tirar Manos Ardientes.</div>
+      <button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STATS ===== -->
+<div id="page-stats" class="page">
+  <div class="panel">
+    <div class="ptitle">📊 Atributos</div>
+    <div class="grid3">
+      <div class="stat-box"><span class="stat-name">Fuerza</span><div class="stat-mod">+0</div><div class="stat-score">11</div></div>
+      <div class="stat-box"><span class="stat-name">Destreza</span><div class="stat-mod">+5</div><div class="stat-score">16</div></div>
+      <div class="stat-box"><span class="stat-name">Constitución</span><div class="stat-mod">+3</div><div class="stat-score">17</div></div>
+      <div class="stat-box"><span class="stat-name">Inteligencia</span><div class="stat-mod">+0</div><div class="stat-score">11</div></div>
+      <div class="stat-box"><span class="stat-name">Sabiduría</span><div class="stat-mod">+2</div><div class="stat-score">15</div></div>
+      <div class="stat-box hl"><span class="stat-name">Carisma ★</span><div class="stat-mod">+4</div><div class="stat-score">18</div></div>
+    </div>
+    <div style="font-size:0.72rem;color:var(--dim);text-align:center;font-style:italic;margin-top:8px;">★ Carisma impulsa CD (14) y ataque (+6) de todos tus conjuros</div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <div class="ptitle">🎯 Salvaciones</div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Constitución</div><div class="sk-val">+5</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Carisma</div><div class="sk-val">+6</div></div>
+      <div class="div"></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Fuerza</div><div class="sk-val">+0</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Destreza</div><div class="sk-val">+3</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Inteligencia</div><div class="sk-val">+0</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Sabiduría</div><div class="sk-val">+2</div></div>
+    </div>
+    <div class="panel">
+      <div class="ptitle">🎲 Habilidades</div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Acrobacias</div><span class="sk-attr">Des</span><div class="sk-val">+5</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Arcanos</div><span class="sk-attr">Int</span><div class="sk-val">+2</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Atletismo</div><span class="sk-attr">Fue</span><div class="sk-val">+0</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Engaño</div><span class="sk-attr">Car</span><div class="sk-val">+6</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Historia</div><span class="sk-attr">Int</span><div class="sk-val">+2</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Interpretación</div><span class="sk-attr">Car</span><div class="sk-val">+6</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Intimidación</div><span class="sk-attr">Car</span><div class="sk-val">+6</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Investigación</div><span class="sk-attr">Int</span><div class="sk-val">+0</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Juego de Manos</div><span class="sk-attr">Des</span><div class="sk-val">+5</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Medicina</div><span class="sk-attr">Sab</span><div class="sk-val">+2</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Naturaleza</div><span class="sk-attr">Int</span><div class="sk-val">+0</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Percepción</div><span class="sk-attr">Sab</span><div class="sk-val">+4</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Perspicacia</div><span class="sk-attr">Sab</span><div class="sk-val">+2</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Persuasión</div><span class="sk-attr">Car</span><div class="sk-val">+6</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Religión</div><span class="sk-attr">Int</span><div class="sk-val">+0</div></div>
+      <div class="sk-row"><div class="sk-dot"></div><div class="sk-name">Sigilo</div><span class="sk-attr">Des</span><div class="sk-val">+5</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Supervivencia ★</div><span class="sk-attr">Sab</span><div class="sk-val">+2</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Trato c/ Animales ★</div><span class="sk-attr">Sab</span><div class="sk-val">+2</div></div>
+      <div class="div"></div>
+      <div style="font-size:0.72rem;color:var(--dim);">Percepción Pasiva: <strong style="color:var(--text)">12</strong></div>
+      <div style="font-size:0.65rem;color:var(--dim);margin-top:3px;font-style:italic;">★ del Trasfondo Héroe del Pueblo</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">🌐 Idiomas y Competencias de Armas</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <span style="background:rgba(0,207,255,0.08);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:0.75rem;color:var(--ice);font-family:'Cinzel',serif;">Común</span>
+      <span style="background:rgba(0,207,255,0.08);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:0.75rem;color:var(--ice);font-family:'Cinzel',serif;">Élfico</span>
+      <span style="background:rgba(0,207,255,0.08);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:0.75rem;color:var(--ice);font-family:'Cinzel',serif;">Dracónico</span>
+      <span style="background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.2);border-radius:4px;padding:4px 10px;font-size:0.75rem;color:var(--gold);font-family:'Cinzel',serif;">Daga</span>
+      <span style="background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.2);border-radius:4px;padding:4px 10px;font-size:0.75rem;color:var(--gold);font-family:'Cinzel',serif;">Ballesta Ligera</span>
+      <span style="background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.2);border-radius:4px;padding:4px 10px;font-size:0.75rem;color:var(--gold);font-family:'Cinzel',serif;">Gran Clava</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RASGOS ===== -->
+<div id="page-rasgos" class="page">
+  <div class="trait-card">
+    <div class="trait-title">🐉 Resistencia Dracónica</div>
+    <div class="trait-text"><strong>+2 PG por nivel</strong> (incluidos en tus 19 PG). CA anotada en hoja: <strong>18</strong>. Sin armadura = 13 + Des.</div>
+  </div>
+  <div class="trait-card">
+    <div class="trait-title">❄ Resistencia al Frío</div>
+    <div class="trait-text">Cuando recibís daño de tipo frío, solo sufrís la <strong>mitad</strong>. Permanente, sin concentración.</div>
+  </div>
+  <div class="trait-card">
+    <div class="trait-title">🔮 Metamagia — Conjuro Potenciado</div>
+    <div class="trait-text">Cuesta <strong>1 punto de hechicería</strong>. Retirar hasta <strong>3 dados de daño y quedarte los mejores</strong>.</div>
+  </div>
+  <div class="trait-card">
+    <div class="trait-title">🛡 Metamagia — Conjuro Cuidadoso</div>
+    <div class="trait-text">Cuesta <strong>1 punto de hechicería</strong>. Aliados superan automáticamente tu conjuro de área.</div>
+  </div>
+  <div class="trait-card">
+    <div class="trait-title">👁 Visión en Oscuridad</div>
+    <div class="trait-text">Ves en oscuridad hasta <strong>18 metros</strong>. Oscuridad total = luz tenue.</div>
+  </div>
+  <div class="trait-card">
+    <div class="trait-title">🌙 Ascendencia Feérica (Élfico)</div>
+    <div class="trait-text"><strong>Ventaja vs encantamiento</strong> e inmunidad al sueño mágico.</div>
+  </div>
+  <div class="trait-card">
+    <div class="trait-title">✨ Trance (Élfico)</div>
+    <div class="trait-text"><strong>4h meditación = 8h descanso.</strong> Consciente del entorno.</div>
+  </div>
+  <div class="div"></div>
+  <div style="background:rgba(0,207,255,0.04);border:1px solid rgba(0,207,255,0.12);border-radius:8px;padding:14px;font-size:0.8rem;color:var(--dim);line-height:1.8;">
+    <div style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:2px;color:var(--ice2);margin-bottom:8px;">PERSONALIDAD</div>
+    <div><strong style="color:var(--ice)">Rasgos:</strong> Línea de sangre · Plata · Hielo. Quieren cobrarse las cosas.</div>
+    <div><strong style="color:var(--ice)">Ideal:</strong> Belleza.</div>
+    <div><strong style="color:var(--ice)">Vínculo:</strong> Buscando respuesta a una pregunta que me carcome.</div>
+    <div><strong style="color:var(--ice)">Defecto:</strong> No puedo guardar secretos.</div>
+  </div>
+</div>
+
+<!-- ===== TRASFONDO ===== -->
+<div id="page-trasfondo" class="page">
+  <div class="panel">
+    <div class="ptitle">🏘 Héroe del Pueblo</div>
+    <div style="font-size:0.85rem;color:var(--text);line-height:1.7;">Venís de una clase social humilde, pero estás destinado para mucho más. La gente de tu pueblo natal ya te considera su campeón, llamado a enfrentarse a los tiranos y monstruos que amenazan a la gente común.</div>
+    <div style="margin-top:12px;background:rgba(0,207,255,0.05);border:1px solid rgba(0,207,255,0.15);border-radius:6px;padding:10px;font-size:0.8rem;color:var(--ice2);">
+      <strong>Rasgo: Rústico Carismático</strong> — La gente común confía en vos. Conseguís comida, alojamiento e información de aldeanos y granjeros sin dificultad.
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="ptitle">✦ Competencias</div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Trato con Animales</div><span class="sk-attr">Sab</span><div class="sk-val">+2</div></div>
+      <div class="sk-row p"><div class="sk-dot f"></div><div class="sk-name">Supervivencia</div><span class="sk-attr">Sab</span><div class="sk-val">+2</div></div>
+      <div class="div"></div>
+      <div style="font-size:0.78rem;color:var(--dim);">🔨 Herramientas de artesano (a elección)</div>
+      <div style="font-size:0.78rem;color:var(--dim);margin-top:4px;">🚗 Vehículos terrestres</div>
+      <div class="div"></div>
+      <div style="font-size:0.72rem;color:var(--dim);font-style:italic;">Equipo: herramientas de artesano · pala · olla de hierro · ropa común · 10 po</div>
+    </div>
+    <div class="panel">
+      <div class="ptitle">✦ Mi Personalidad</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin-bottom:4px;">RASGOS</div>
+      <div style="font-size:0.8rem;color:var(--text);margin-bottom:10px;">Línea de sangre · Plata · Hielo. Quieren cobrarse las cosas.</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin-bottom:4px;">IDEAL</div>
+      <div style="font-size:0.8rem;color:var(--text);margin-bottom:10px;">Belleza.</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin-bottom:4px;">VÍNCULO</div>
+      <div style="font-size:0.8rem;color:var(--text);margin-bottom:10px;">Estoy buscando respuesta a una pregunta que me carcome.</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin-bottom:4px;">DEFECTO</div>
+      <div style="font-size:0.8rem;color:var(--text);">No puedo guardar secretos.</div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">📋 Sugerencias del Manual</div>
+    <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin-bottom:6px;">RASGOS DE PERSONALIDAD</div>
+    <div style="font-size:0.78rem;color:var(--dim);line-height:1.8;">1. Juzgo a la gente por sus acciones, no sus palabras.<br>2. Siempre estoy dispuesto a prestar ayuda.<br>3. Cuando me propongo algo, nada se interpone en mi camino.<br>4. Tengo un fuerte sentido del juego limpio.<br>5. Prefiero la acción antes que pensar.<br>6. Hago mal uso de palabras largas para parecer más inteligente.</div>
+    <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin:10px 0 6px;">IDEALES</div>
+    <div style="font-size:0.78rem;color:var(--dim);line-height:1.8;">• Respeto <span style="color:var(--safe)">(Bueno)</span> · Equidad <span style="color:var(--safe)">(Legal)</span> · Libertad <span style="color:var(--warn)">(Caótico)</span> · Sinceridad <span style="color:var(--dim)">(Neutral)</span> · Destino <span style="color:var(--ice2)">(Cualquiera)</span></div>
+    <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin:10px 0 6px;">VÍNCULOS</div>
+    <div style="font-size:0.78rem;color:var(--dim);line-height:1.8;">• Tengo familia pero no sé dónde están.<br>• Protejo a quienes no pueden protegerse.<br>• Un noble me humilló y busco vengarme.</div>
+    <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--ice3);margin:10px 0 6px;">DEFECTOS</div>
+    <div style="font-size:0.78rem;color:var(--dim);line-height:1.8;">• Un tirano quiere verme muerto.<br>• Estoy ciego ante mis propias carencias.<br>• Tengo un vergonzoso secreto y no puedo volver a casa.<br>• Tengo debilidad por los vicios de la ciudad.</div>
+  </div>
+</div>
+
+<!-- ===== EQUIPO ===== -->
+<div id="page-equipo" class="page">
+  <div class="panel">
+    <div class="ptitle">⚔ Armas</div>
+    <div class="eq-row"><div style="font-size:1.1rem;">🗡</div><div class="eq-name">Daga</div><div class="eq-qty">+5 · 1d4+3 perforante · CC o arrojadiza 6m</div></div>
+    <div class="eq-row"><div style="font-size:1.1rem;">🏹</div><div class="eq-name">Ballesta Ligera</div><div class="eq-qty">+5 · 1d8+3 perforante · 24m/96m</div></div>
+    <div class="eq-row"><div style="font-size:1.1rem;">🪵</div><div class="eq-name">Gran Clava (2 manos)</div><div class="eq-qty">+2 · 1d8 contundente</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">🎒 Mochila</div>
+    <div class="eq-row"><div style="font-size:1rem;">🛏</div><div class="eq-name">Saco de dormir</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🍳</div><div class="eq-name">Equipo de cocina</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🔥</div><div class="eq-name">Yesquero</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🕯</div><div class="eq-name">Antorchas</div><div class="eq-qty">×10</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🍱</div><div class="eq-name">Raciones de viaje</div><div class="eq-qty">×10 días</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🧴</div><div class="eq-name">Odre de agua</div><div class="eq-qty">×1</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🪢</div><div class="eq-name">Cuerda de cáñamo</div><div class="eq-qty">50 pies (15m)</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🪶</div><div class="eq-name">Pluma + tintero</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🔪</div><div class="eq-name">Cuchillo pequeño</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">📜</div><div class="eq-name">Carta sin leer</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">👘</div><div class="eq-name">Ropa común</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">🥾</div><div class="eq-name">Par de botas</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">👝</div><div class="eq-name">Bolsa de componentes</div></div>
+    <div class="eq-row"><div style="font-size:1rem;">⛽</div><div class="eq-name">2 de gas</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">💰 Monedas</div>
+    <div class="grid3">
+      <div style="text-align:center;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:12px;">
+        <div style="font-size:1.2rem;">🥇</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);margin:4px 0;">ORO</div>
+        <div style="font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);" id="gold-val">0</div>
+        <div style="display:flex;justify-content:center;gap:6px;margin-top:6px;">
+          <button class="btn-sm d" onclick="changeCoin('gold',-1)">−</button>
+          <button class="btn-sm" onclick="changeCoin('gold',1)">+</button>
+        </div>
+      </div>
+      <div style="text-align:center;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:12px;">
+        <div style="font-size:1.2rem;">🥈</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);margin:4px 0;">PLATA</div>
+        <div style="font-family:'Cinzel',serif;font-size:1.4rem;color:#c0c0c0;" id="silver-val">0</div>
+        <div style="display:flex;justify-content:center;gap:6px;margin-top:6px;">
+          <button class="btn-sm d" onclick="changeCoin('silver',-1)">−</button>
+          <button class="btn-sm" onclick="changeCoin('silver',1)">+</button>
+        </div>
+      </div>
+      <div style="text-align:center;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:12px;">
+        <div style="font-size:1.2rem;">🟤</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);margin:4px 0;">COBRE</div>
+        <div style="font-family:'Cinzel',serif;font-size:1.4rem;color:#cd7f32;" id="copper-val">0</div>
+        <div style="display:flex;justify-content:center;gap:6px;margin-top:6px;">
+          <button class="btn-sm d" onclick="changeCoin('copper',-1)">−</button>
+          <button class="btn-sm" onclick="changeCoin('copper',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT={hp:19,slotsN1:[false,false,false],sp:[false,false],dsS:[false,false,false],dsX:[false,false,false],coins:{gold:0,silver:0,copper:0},notes:''};
+
+function saveState(){
+  const s={
+    hp:parseInt(document.getElementById('hp-val').textContent),
+    slotsN1:[...document.querySelectorAll('#slots-n1 .slot-dot')].map(d=>d.classList.contains('used')),
+    sp:[...document.querySelectorAll('#sp-dots .sp-dot')].map(d=>d.classList.contains('used')),
+    dsS:[...document.querySelectorAll('#ds-s .ds-dot')].map(d=>d.classList.contains('f')),
+    dsX:[...document.querySelectorAll('#ds-x .ds-dot')].map(d=>d.classList.contains('f')),
+    coins:{gold:parseInt(document.getElementById('gold-val').textContent)||0,silver:parseInt(document.getElementById('silver-val').textContent)||0,copper:parseInt(document.getElementById('copper-val').textContent)||0},
+    notes:document.querySelector('.notes')?.value||''
+  };
+  try{localStorage.setItem('hechicero_state',JSON.stringify(s));}catch(e){}
+}
+
+function loadState(){try{const r=localStorage.getItem('hechicero_state');return r?JSON.parse(r):null;}catch(e){return null;}}
+
+function applyState(s){
+  const hp=s.hp??19;
+  document.getElementById('hp-val').textContent=hp;
+  updateHPBar(hp);
+  const sn=[...document.querySelectorAll('#slots-n1 .slot-dot')];
+  sn.forEach((d,i)=>d.classList.toggle('used',!!(s.slotsN1||[])[i]));
+  document.getElementById('slots-n1-count').textContent=sn.filter(d=>!d.classList.contains('used')).length+' / '+sn.length;
+  const sp=[...document.querySelectorAll('#sp-dots .sp-dot')];
+  sp.forEach((d,i)=>d.classList.toggle('used',!!(s.sp||[])[i]));
+  document.getElementById('sp-count').textContent=sp.filter(d=>!d.classList.contains('used')).length+' / '+sp.length;
+  document.querySelectorAll('#ds-s .ds-dot').forEach((d,i)=>d.classList.toggle('f',!!(s.dsS||[])[i]));
+  document.querySelectorAll('#ds-x .ds-dot').forEach((d,i)=>d.classList.toggle('f',!!(s.dsX||[])[i]));
+  const c=s.coins||{gold:0,silver:0,copper:0};
+  document.getElementById('gold-val').textContent=c.gold||0;
+  document.getElementById('silver-val').textContent=c.silver||0;
+  document.getElementById('copper-val').textContent=c.copper||0;
+  const n=document.querySelector('.notes');
+  if(n)n.value=s.notes||'';
+}
+
+function updateHPBar(v){
+  const pct=(v/19)*100,bar=document.getElementById('hp-bar');
+  bar.style.width=pct+'%';
+  if(pct>60)bar.style.background='linear-gradient(90deg,#1a7aaa,#00cfff)';
+  else if(pct>30)bar.style.background='linear-gradient(90deg,#aa7700,#e0a030)';
+  else bar.style.background='linear-gradient(90deg,#aa1a1a,#e05555)';
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const saved=loadState();
+  if(saved)applyState(saved);
+  const n=document.querySelector('.notes');
+  if(n)n.addEventListener('input',saveState);
+});
+
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function changeHP(delta){
+  const el=document.getElementById('hp-val');
+  let v=Math.max(0,Math.min(19,parseInt(el.textContent)+delta));
+  el.textContent=v;updateHPBar(v);
+  if(v===0)toast('⚠ 0 PG — Salvaciones de Muerte!');
+  saveState();
+}
+
+function toggleSlot(el,level){
+  el.classList.toggle('used');
+  const dots=document.querySelectorAll('#slots-'+level+' .slot-dot');
+  const avail=[...dots].filter(d=>!d.classList.contains('used')).length;
+  document.getElementById('slots-'+level+'-count').textContent=avail+' / '+dots.length;
+  if(avail===0)toast('Sin espacios de nivel 1 — descansá para recuperarlos');
+  saveState();
+}
+
+function toggleSP(el){
+  el.classList.toggle('used');
+  const dots=document.querySelectorAll('#sp-dots .sp-dot');
+  document.getElementById('sp-count').textContent=[...dots].filter(d=>!d.classList.contains('used')).length+' / '+dots.length;
+  saveState();
+}
+
+function useSpell(level){
+  const dots=document.querySelectorAll('#slots-'+level+' .slot-dot');
+  const avail=[...dots].find(d=>!d.classList.contains('used'));
+  if(avail){avail.classList.add('used');const a=[...dots].filter(d=>!d.classList.contains('used')).length;document.getElementById('slots-'+level+'-count').textContent=a+' / '+dots.length;toast('✨ Espacio N1 gastado — quedan '+a);saveState();}
+  else toast('❌ Sin espacios de nivel 1 disponibles');
+}
+
+function resetResources(){
+  document.querySelectorAll('.slot-dot').forEach(d=>d.classList.remove('used'));
+  document.querySelectorAll('.sp-dot').forEach(d=>d.classList.remove('used'));
+  document.getElementById('hp-val').textContent=19;updateHPBar(19);
+  document.getElementById('slots-n1-count').textContent='3 / 3';
+  document.getElementById('sp-count').textContent='2 / 2';
+  toast('✅ Descanso Largo — recursos recuperados');saveState();
+}
+
+function fullReset(){
+  if(!confirm('¿Reiniciar TODO? Se borran PG, recursos, monedas y notas.'))return;
+  try{localStorage.removeItem('hechicero_state');}catch(e){}
+  applyState(DEFAULT);
+  document.getElementById('gold-val').textContent=0;
+  document.getElementById('silver-val').textContent=0;
+  document.getElementById('copper-val').textContent=0;
+  const n=document.querySelector('.notes');if(n)n.value='';
+  toast('🔄 Partida reiniciada desde cero');
+}
+
+function toggleDS(el,type){
+  el.classList.toggle('f');
+  const filled=document.querySelectorAll('#ds-'+type+' .ds-dot.f').length;
+  if(type==='s'&&filled===3)toast('✅ Estabilizado — 3 éxitos!');
+  if(type==='x'&&filled===3)toast('💀 ¡Muerte! — 3 fallos');
+  saveState();
+}
+
+function resetDS(){document.querySelectorAll('.ds-dot').forEach(d=>d.classList.remove('f'));saveState();}
+
+function changeCoin(type,delta){
+  const el=document.getElementById(type+'-val');
+  el.textContent=Math.max(0,(parseInt(el.textContent)||0)+delta);
+  saveState();
+}
+
+function toggleSpell(id){document.getElementById('spell-'+id).classList.toggle('open');}
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
