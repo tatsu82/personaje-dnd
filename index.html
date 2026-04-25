@@ -70,6 +70,43 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .slabel{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:1px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:3px;}
 .sval{font-family:'Cinzel',serif;font-size:0.8rem;color:var(--ice);font-weight:600;}
 .sdesc{font-size:0.82rem;color:var(--dim);line-height:1.6;}
+/* Tags */
+.tags-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.tag{font-size:0.55rem;padding:2px 7px;border-radius:10px;font-family:'Cinzel',serif;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;border:1px solid;}
+.tag-attack{background:rgba(255,128,128,0.1);color:#ff9999;border-color:rgba(255,128,128,0.35);}
+.tag-save{background:rgba(224,168,48,0.1);color:var(--warn);border-color:rgba(224,168,48,0.35);}
+.tag-auto{background:rgba(78,203,122,0.12);color:var(--safe);border-color:rgba(78,203,122,0.4);}
+.tag-dmg{background:rgba(224,85,85,0.12);color:#ff8080;border-color:rgba(224,85,85,0.35);}
+.tag-area{background:rgba(255,170,68,0.12);color:#ffaa44;border-color:rgba(255,170,68,0.4);}
+.tag-fire{background:rgba(255,85,0,0.12);color:#ff7733;border-color:rgba(255,85,0,0.4);}
+.tag-cold{background:rgba(128,212,255,0.12);color:#80d4ff;border-color:rgba(128,212,255,0.4);}
+.tag-elec{background:rgba(170,170,255,0.12);color:#aaaaff;border-color:rgba(170,170,255,0.4);}
+.tag-poison{background:rgba(120,200,100,0.12);color:#78c864;border-color:rgba(120,200,100,0.4);}
+.tag-necro{background:rgba(180,120,200,0.12);color:#b478c8;border-color:rgba(180,120,200,0.4);}
+.tag-sonic{background:rgba(170,221,255,0.12);color:#aaddff;border-color:rgba(170,221,255,0.4);}
+.tag-acid{background:rgba(120,220,80,0.12);color:#78dc50;border-color:rgba(120,220,80,0.4);}
+.tag-force{background:rgba(200,200,255,0.12);color:#c8c8ff;border-color:rgba(200,200,255,0.4);}
+.tag-slow{background:rgba(170,140,220,0.12);color:#aa8cdc;border-color:rgba(170,140,220,0.4);}
+.tag-sleep{background:rgba(100,120,180,0.12);color:#6480b4;border-color:rgba(100,120,180,0.4);}
+.tag-blind{background:rgba(220,180,100,0.12);color:#dcb464;border-color:rgba(220,180,100,0.4);}
+.tag-mental{background:rgba(220,120,180,0.12);color:#dc78b4;border-color:rgba(220,120,180,0.4);}
+.tag-defense{background:rgba(78,203,220,0.12);color:#4ecbdc;border-color:rgba(78,203,220,0.4);}
+.tag-utility{background:rgba(150,150,150,0.12);color:#aaaaaa;border-color:rgba(150,150,150,0.4);}
+.tag-conc{background:rgba(200,168,75,0.08);color:var(--gold);border-color:rgba(200,168,75,0.3);}
+.tag-ritual{background:rgba(100,200,200,0.08);color:#64c8c8;border-color:rgba(100,200,200,0.3);}
+.tag-push{background:rgba(200,140,100,0.12);color:#c88c64;border-color:rgba(200,140,100,0.4);}
+.tag-buff{background:rgba(140,220,140,0.1);color:#8cdc8c;border-color:rgba(140,220,140,0.35);}
+/* Modal spell row */
+.modal-spell{background:#030e17;border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;}
+.modal-spell:hover{border-color:var(--accent);}
+.modal-spell.selected{border-color:var(--accent);background:rgba(0,207,255,0.05);}
+.modal-spell.disabled{opacity:0.4;cursor:not-allowed;}
+.modal-check{width:20px;height:20px;border:2px solid var(--border-bright);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700;}
+.modal-spell.selected .modal-check{background:var(--accent);border-color:var(--accent);color:#000;}
+.modal-spell.selected .modal-check::after{content:'✓';}
+.modal-info{flex:1;min-width:0;}
+.modal-name{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--frost);margin-bottom:3px;}
+.modal-quick{font-size:0.72rem;color:var(--dim);}
 .stip{margin-top:8px;padding:8px 10px;background:rgba(0,207,255,0.05);border-left:2px solid var(--accent);border-radius:0 4px 4px 0;font-size:0.75rem;color:var(--ice2);font-style:italic;}
 .use-btn{margin-top:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border-radius:5px;cursor:pointer;transition:all 0.2s;}
 .use-btn:hover{background:rgba(0,207,255,0.22);}
@@ -128,6 +165,71 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   .char-name{font-size:1.4rem;}
   .grid2{grid-template-columns:1fr;}
 }
+/* ── BARRA FIJA DE COMBATE ── */
+.combat-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(4,17,28,0.97);
+  border-top:1px solid rgba(0,207,255,0.3);
+  z-index:200;
+  padding:8px 12px;
+  backdrop-filter:blur(10px);
+}
+.combat-bar-inner{
+  max-width:900px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr auto auto auto;
+  gap:10px;align-items:center;
+}
+.cb-hp{display:flex;flex-direction:column;gap:3px;}
+.cb-hp-row{display:flex;align-items:center;gap:6px;}
+.cb-hp-val{font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--frost);text-shadow:0 0 10px rgba(0,207,255,0.4);line-height:1;}
+.cb-hp-max{font-size:0.65rem;color:var(--dim);font-family:'Cinzel',serif;}
+.cb-bar-bg{height:4px;background:rgba(0,0,0,0.5);border-radius:2px;overflow:hidden;}
+.cb-bar-fill{height:100%;border-radius:2px;transition:width 0.3s,background 0.3s;}
+.cb-btn{width:32px;height:32px;border-radius:6px;border:1px solid;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all 0.15s;flex-shrink:0;}
+.cb-btn-minus{border-color:var(--danger);color:var(--danger);background:rgba(224,85,85,0.08);}
+.cb-btn-minus:hover{background:rgba(224,85,85,0.22);}
+.cb-btn-plus{border-color:var(--safe);color:var(--safe);background:rgba(78,203,122,0.08);}
+.cb-btn-plus:hover{background:rgba(78,203,122,0.22);}
+.cb-resource{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:50px;}
+.cb-res-label{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
+.cb-res-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;}
+.cb-slot{width:14px;height:14px;border-radius:3px;border:1px solid var(--accent);background:rgba(0,207,255,0.2);cursor:pointer;transition:all 0.15s;}
+.cb-slot.used{background:transparent;border-color:rgba(80,130,160,0.25);}
+.cb-sp{width:11px;height:11px;border-radius:50%;border:1px solid var(--ice2);background:rgba(0,180,230,0.25);cursor:pointer;transition:all 0.15s;}
+.cb-sp.used{background:transparent;border-color:rgba(80,130,160,0.2);}
+/* counter de asaltos */
+.cb-round{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:44px;}
+.cb-round-val{font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:var(--gold);line-height:1;}
+.cb-round-btns{display:flex;gap:3px;}
+.cb-round-btn{width:22px;height:18px;border-radius:3px;border:1px solid rgba(200,168,75,0.4);background:rgba(200,168,75,0.08);color:var(--gold);font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+/* pad bottom so content doesn't hide behind bar */
+.app{padding-bottom:80px;}
+/* spell quick view in combat */
+.spell-quick-card{
+  background:#030e17;border:1px solid var(--border);border-radius:8px;
+  padding:10px 12px;margin-bottom:6px;
+  display:flex;align-items:center;gap:10px;
+  transition:border-color 0.2s;cursor:pointer;
+}
+.spell-quick-card:hover{border-color:rgba(0,207,255,0.35);}
+.sqc-icon{font-size:1.2rem;flex-shrink:0;}
+.sqc-name{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--frost);margin-bottom:2px;}
+.sqc-dmg{font-size:0.75rem;color:var(--accent);font-weight:600;}
+.sqc-how{font-size:0.68rem;color:var(--dim);font-style:italic;}
+/* char name editable */
+.char-name-editable{
+  background:none;border:none;border-bottom:1px solid rgba(0,207,255,0.2);
+  color:var(--frost);font-family:'Cinzel Decorative',serif;font-size:1.9rem;
+  text-align:center;letter-spacing:3px;width:100%;outline:none;
+  text-shadow:0 0 30px rgba(0,207,255,0.7);
+  transition:border-color 0.2s;
+}
+.char-name-editable:focus{border-color:var(--accent);}
+@media(max-width:500px){
+  .combat-bar-inner{grid-template-columns:1fr auto auto;}
+  .cb-round{display:none;}
+}
 </style>
 </head>
 <body>
@@ -135,7 +237,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="header">
   <div style="font-size:2.5rem;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(0,200,255,0.7))">❄🐉</div>
-  <div class="char-name">Aethon Vyreth</div>
+  <input class="char-name-editable" id="char-name-input" value="(Nombre del personaje)" placeholder="Nombre del personaje" oninput="saveState()">
   <div class="char-sub">Hechicero 2 · Élfico · Origen Dracónico · Sangre de Hielo · Héroe del Pueblo</div>
 </div>
 
@@ -151,37 +253,71 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <!-- ===== COMBATE ===== -->
 <div id="page-combate" class="page active">
 
-  <div class="grid3" style="margin-bottom:10px;">
-    <div class="res-box">
-      <span class="res-label">❤ Puntos de Golpe</span>
-      <div class="res-value" id="hp-val">19</div>
-      <div class="hp-bar-bg"><div class="hp-bar-fill" id="hp-bar" style="width:100%;background:linear-gradient(90deg,#1a7aaa,#00cfff);"></div></div>
-      <div class="res-controls">
-        <button class="btn-sm d sm" onclick="changeHP(-5)">−5</button>
-        <button class="btn-sm d" onclick="changeHP(-1)">−</button>
-        <button class="btn-sm" onclick="changeHP(1)">+</button>
-        <button class="btn-sm sm" onclick="changeHP(5)">+5</button>
+  <!-- Asalto + Stats rápidos -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;">⚔ Asalto</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button onclick="changeRound(-1)" style="width:34px;height:34px;border-radius:6px;border:1px solid rgba(200,168,75,0.4);background:rgba(200,168,75,0.08);color:var(--gold);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>
+          <div id="round-val" style="font-family:'Cinzel Decorative',serif;font-size:2rem;color:var(--gold);min-width:40px;text-align:center;line-height:1;">1</div>
+          <button onclick="changeRound(1)" style="width:34px;height:34px;border-radius:6px;border:1px solid rgba(200,168,75,0.4);background:rgba(200,168,75,0.08);color:var(--gold);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
+          <button onclick="changeRound(0)" style="border:1px solid var(--border);background:transparent;color:var(--dim);font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:1px;padding:5px 8px;border-radius:4px;cursor:pointer;">RESET</button>
+        </div>
       </div>
-      <div style="font-size:0.65rem;color:var(--dim);margin-top:4px;font-family:'Cinzel',serif;">MAX: 19</div>
-    </div>
-    <div class="res-box">
-      <span class="res-label">🛡 Clase de Armadura</span>
-      <div class="res-value" style="color:var(--accent);text-shadow:0 0 20px var(--accent);">18</div>
-      <div style="font-size:0.7rem;color:var(--dim);margin-top:8px;">18 (anotado en hoja)</div>
-      <div style="font-size:0.65rem;color:var(--ice2);margin-top:4px;font-style:italic;">Escamas dracónicas</div>
-    </div>
-    <div class="res-box">
-      <span class="res-label">⚡ Inic. / Velocidad</span>
-      <div style="display:flex;justify-content:center;gap:16px;align-items:flex-end;margin-top:6px;">
-        <div><div class="res-value" style="font-size:1.4rem;">+5</div><div style="font-size:0.6rem;color:var(--dim);font-family:'Cinzel',serif;">INIC.</div></div>
-        <div><div class="res-value" style="font-size:1.4rem;">36</div><div style="font-size:0.6rem;color:var(--dim);font-family:'Cinzel',serif;">PIES</div></div>
+      <div style="display:flex;gap:14px;align-items:center;">
+        <div style="text-align:center;"><div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;color:var(--dim);margin-bottom:3px;">CA</div><div style="font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:var(--accent);text-shadow:0 0 12px var(--accent);">18</div></div>
+        <div style="text-align:center;"><div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;color:var(--dim);margin-bottom:3px;">INIC.</div><div style="font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:var(--frost);">+5</div></div>
+        <div style="text-align:center;"><div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;color:var(--dim);margin-bottom:3px;">VEL.</div><div style="font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:var(--frost);">36</div></div>
       </div>
     </div>
   </div>
 
-  <div class="panel">
+  <!-- Salvaciones de muerte — solo visible cuando HP=0 -->
+  <div id="ds-panel" class="panel" style="margin-bottom:10px;display:none;border-color:rgba(224,85,85,0.4);">
+    <div class="ptitle" style="color:var(--danger);">💀 SALVACIONES DE MUERTE</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-family:'Cinzel',serif;font-size:0.6rem;color:var(--safe);">✓ ÉXITOS</span>
+        <div style="display:flex;gap:6px;" id="ds-s">
+          <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
+          <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
+          <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-family:'Cinzel',serif;font-size:0.6rem;color:var(--danger);">✗ FALLOS</span>
+        <div style="display:flex;gap:6px;" id="ds-x">
+          <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
+          <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
+          <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:0.7rem;color:var(--dim);margin-top:6px;font-style:italic;">3 éxitos = estabilizado · 3 fallos = muerte</div>
+    <button onclick="resetDS()" style="margin-top:6px;background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;padding:4px 10px;border-radius:4px;cursor:pointer;text-transform:uppercase;">Resetear</button>
+  </div>
+
+  <!-- PG grande -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="ptitle">❤ Puntos de Golpe</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn-sm d sm" onclick="changeHP(-5)" style="width:44px;height:44px;font-size:0.9rem;border-radius:8px;">−5</button>
+      <button class="btn-sm d" onclick="changeHP(-1)" style="width:44px;height:44px;font-size:1.4rem;border-radius:8px;">−</button>
+      <div style="flex:1;text-align:center;">
+        <div id="hp-val" style="font-family:'Cinzel Decorative',serif;font-size:3rem;color:var(--frost);text-shadow:0 0 20px rgba(0,207,255,0.4);line-height:1;">19</div>
+        <div class="hp-bar-bg" style="margin-top:6px;height:8px;"><div class="hp-bar-fill" id="hp-bar" style="width:100%;background:linear-gradient(90deg,#1a7aaa,#00cfff);"></div></div>
+        <div style="font-size:0.62rem;color:var(--dim);margin-top:3px;font-family:'Cinzel',serif;">MAX: 19</div>
+      </div>
+      <button class="btn-sm" onclick="changeHP(1)" style="width:44px;height:44px;font-size:1.4rem;border-radius:8px;">+</button>
+      <button class="btn-sm sm" onclick="changeHP(5)" style="width:44px;height:44px;font-size:0.9rem;border-radius:8px;">+5</button>
+    </div>
+  </div>
+
+  <!-- Recursos de magia -->
+  <div class="panel" style="margin-bottom:10px;">
     <div class="ptitle">✦ Recursos de Magia</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
       <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);min-width:80px;">Espacios N1</span>
       <div id="slots-n1" style="display:flex;gap:6px;">
         <div class="slot-dot" onclick="toggleSlot(this,'n1')"></div>
@@ -190,7 +326,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
       <span style="font-size:0.7rem;color:var(--dim);" id="slots-n1-count">3 / 3</span>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+    <div id="slot-icons-row" style="display:flex;gap:6px;margin-bottom:8px;margin-left:90px;"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
       <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);min-width:80px;">Hechicería</span>
       <div id="sp-dots" style="display:flex;gap:6px;">
         <div class="sp-dot" onclick="toggleSP(this)"></div>
@@ -198,9 +335,151 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
       <span style="font-size:0.7rem;color:var(--dim);" id="sp-count">2 / 2</span>
     </div>
-    <div style="background:rgba(0,0,0,0.2);border-radius:6px;padding:8px;font-size:0.75rem;color:var(--dim);line-height:1.7;">
-      💡 <strong style="color:var(--ice2)">Conjuro Potenciado:</strong> 1 punto → retirar hasta 3 dados de daño<br>
-      💡 <strong style="color:var(--ice2)">Conjuro Cuidadoso:</strong> 1 punto → aliados ignoran área de tus conjuros
+    <div style="background:#030e17;border-radius:6px;padding:8px;font-size:0.75rem;color:var(--dim);line-height:1.7;">
+      💡 <strong style="color:var(--ice2)">Potenciado:</strong> 1 pto → retirar hasta 3 dados de daño &nbsp;·&nbsp;
+      <strong style="color:var(--ice2)">Cuidadoso:</strong> 1 pto → aliados seguros en área
+    </div>
+
+    <!-- Metamagia expandible -->
+    <div style="margin-top:10px;">
+      <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.innerHTML=this.innerHTML.includes('▼')?'▲ METAMAGIA &amp; PUNTOS':'▼ METAMAGIA &amp; PUNTOS';" style="width:100%;background:rgba(0,207,255,0.06);border:1px solid rgba(0,207,255,0.2);color:var(--ice2);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:2px;padding:8px;border-radius:6px;cursor:pointer;text-transform:uppercase;text-align:left;">▼ METAMAGIA &amp; PUNTOS</button>
+      <div style="display:none;margin-top:6px;">
+
+        <!-- Puntos disponibles y conversión -->
+        <div style="background:#030e17;border:1px solid rgba(200,168,75,0.2);border-radius:8px;padding:10px;margin-bottom:8px;">
+          <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">⚗ Puntos de Hechicería — Nivel 2: 2 puntos</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.75rem;color:var(--dim);">
+            <div style="background:rgba(0,0,0,0.3);border-radius:6px;padding:8px;border:1px solid var(--border);">
+              <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--gold);margin-bottom:4px;">CREAR ESPACIO</div>
+              <div>N1 → <strong style="color:var(--text);">2 pts</strong></div>
+              <div>N2 → <strong style="color:var(--text);">3 pts</strong></div>
+              <div>N3 → <strong style="color:var(--text);">5 pts</strong></div>
+              <div style="color:rgba(106,158,184,0.4);font-size:0.65rem;margin-top:3px;">Acción adicional</div>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:6px;padding:8px;border:1px solid var(--border);">
+              <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--gold);margin-bottom:4px;">CONVERTIR ESPACIO</div>
+              <div>N1 → <strong style="color:var(--text);">1 pto</strong></div>
+              <div>N2 → <strong style="color:var(--text);">2 pts</strong></div>
+              <div>N3 → <strong style="color:var(--text);">3 pts</strong></div>
+              <div style="color:rgba(106,158,184,0.4);font-size:0.65rem;margin-top:3px;">Acción adicional</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Las 7 metamagias -->
+        <div style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;margin-bottom:6px;">✦ Opciones de Metamagia</div>
+
+        <!-- CUIDADOSO ✅ tenés -->
+        <div style="background:#030e17;border:1px solid rgba(78,203,122,0.3);border-radius:8px;padding:10px;margin-bottom:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">🛡</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--safe);">Conjuro Cuidadoso</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="background:rgba(78,203,122,0.12);border:1px solid rgba(78,203,122,0.4);color:var(--safe);font-family:'Cinzel',serif;font-size:0.55rem;padding:2px 8px;border-radius:10px;letter-spacing:1px;">✓ TENÉS</span>
+              <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">1 pto</span>
+            </div>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Al lanzar un conjuro que fuerce <strong style="color:var(--text);">tiradas de salvación</strong>, elegís hasta <strong style="color:var(--text);">+4 criaturas</strong> (modificador de Carisma). Esas criaturas <strong style="color:var(--safe);">pasan automáticamente</strong> la salvación.</div>
+          <div style="font-size:0.7rem;color:var(--ice2);margin-top:4px;font-style:italic;">→ Usalo antes de Manos Ardientes o Onda Atronadora cuando hay aliados en el área.</div>
+        </div>
+
+        <!-- POTENCIADO ✅ tenés -->
+        <div style="background:#030e17;border:1px solid rgba(78,203,122,0.3);border-radius:8px;padding:10px;margin-bottom:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">💥</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--safe);">Conjuro Potenciado</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="background:rgba(78,203,122,0.12);border:1px solid rgba(78,203,122,0.4);color:var(--safe);font-family:'Cinzel',serif;font-size:0.55rem;padding:2px 8px;border-radius:10px;letter-spacing:1px;">✓ TENÉS</span>
+              <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">1 pto</span>
+            </div>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Al tirar daño, retirás hasta <strong style="color:var(--text);">+4 dados</strong> (modificador de Carisma) y usás los nuevos resultados. <strong style="color:var(--warn);">Podés combinarlo con otra metamagia</strong> en el mismo conjuro.</div>
+          <div style="font-size:0.7rem;color:var(--ice2);margin-top:4px;font-style:italic;">→ Si sacaste 1s en los dados de daño, activá esto para mejorar el resultado.</div>
+        </div>
+
+        <!-- ACELERADO — no tenés -->
+        <div style="background:#030e17;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px;opacity:0.75;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">⚡</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);">Conjuro Acelerado</div>
+            </div>
+            <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">2 pts</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Cambia el tiempo de lanzamiento de <strong style="color:var(--text);">1 acción → 1 acción adicional</strong>. Podés lanzar otro conjuro con tu acción principal en el mismo turno.</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;font-style:italic;">→ Disponible en nivel 3 al elegir metamagia.</div>
+        </div>
+
+        <!-- DISTANTE — no tenés -->
+        <div style="background:#030e17;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px;opacity:0.75;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">📡</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);">Conjuro Distante</div>
+            </div>
+            <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">1 pto</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Si el alcance es <strong style="color:var(--text);">5 pies o más</strong>: dobla el alcance. Si el alcance es <strong style="color:var(--text);">toque</strong>: pasa a ser 30 pies.</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;font-style:italic;">→ Disponible en nivel 3 al elegir metamagia.</div>
+        </div>
+
+        <!-- SUTIL — no tenés -->
+        <div style="background:#030e17;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px;opacity:0.75;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">🤫</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);">Conjuro Sutil</div>
+            </div>
+            <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">1 pto</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Lanzás el conjuro <strong style="color:var(--text);">sin componentes verbales ni somáticos</strong>. Nadie puede detectar que estás lanzando un conjuro.</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;font-style:italic;">→ Disponible en nivel 3 al elegir metamagia.</div>
+        </div>
+
+        <!-- AMPLIADO — no tenés -->
+        <div style="background:#030e17;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px;opacity:0.75;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">⏳</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);">Conjuro Ampliado</div>
+            </div>
+            <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">1 pto</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Si el conjuro dura <strong style="color:var(--text);">1 minuto o más</strong>, dobla su duración (máximo 24 horas).</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;font-style:italic;">→ Disponible en nivel 3 al elegir metamagia.</div>
+        </div>
+
+        <!-- AUMENTADO — no tenés -->
+        <div style="background:#030e17;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:6px;opacity:0.75;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">⬇</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);">Conjuro Aumentado</div>
+            </div>
+            <span style="background:rgba(224,85,85,0.1);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">3 pts</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Al lanzar un conjuro con salvación, un objetivo tiene <strong style="color:var(--text);">desventaja en la primera salvación</strong> contra el conjuro.</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;font-style:italic;">→ Disponible en nivel 3 al elegir metamagia.</div>
+        </div>
+
+        <!-- DUPLICADO — no tenés -->
+        <div style="background:#030e17;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:0;opacity:0.75;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;">👥</span>
+              <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--frost);">Conjuro Duplicado</div>
+            </div>
+            <span style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel Decorative',serif;font-size:0.75rem;padding:3px 10px;border-radius:10px;font-weight:700;">= nivel</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;">Si el conjuro apunta a <strong style="color:var(--text);">una sola criatura</strong> y no tiene rango de "uno mismo", gastás <strong style="color:var(--text);">puntos = nivel del conjuro</strong> (1 si es truco) para apuntar a una segunda criatura dentro del alcance.</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;font-style:italic;">→ Disponible en nivel 3 al elegir metamagia.</div>
+        </div>
+
+      </div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
       <button onclick="resetResources()" style="background:rgba(200,168,75,0.1);border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;padding:6px 12px;border-radius:4px;cursor:pointer;text-transform:uppercase;">↺ Descanso Largo</button>
@@ -208,8 +487,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
   </div>
 
-  <div class="panel">
-    <div class="ptitle">⚔ Ataques — CD: <span style="color:var(--accent)">14</span> · Conjuro: <span style="color:var(--accent)">+6</span> · Comp: <span style="color:var(--accent)">+2</span></div>
+  <!-- Vista rápida conjuros preparados -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="ptitle">⚡ Conjuros — tocá para lanzar y marcar usado</div>
+    <div id="quick-spells-list"></div>
+  </div>
+
+  <!-- Ataques físicos -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="ptitle">⚔ Ataques — CD: <span style="color:var(--accent)">14</span> · Conjuro: <span style="color:var(--accent)">+6</span></div>
     <div class="atk-row">
       <div style="font-size:1.5rem;">🔮</div>
       <div style="flex:1;"><div class="atk-name">Ataque de Conjuro</div><div class="atk-sub">Toque Gélido · Rayo de Escarcha · Saeta de Fuego</div></div>
@@ -217,247 +503,81 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
     <div class="atk-row">
       <div style="font-size:1.5rem;">🗡</div>
-      <div style="flex:1;"><div class="atk-name">Daga</div><div class="atk-sub">CC o arrojadiza · 20/60 pies (4/12 casillas) · finesse</div></div>
-      <div class="atk-stat"><span class="atk-lbl">Ataque</span><div class="atk-val">+5</div></div>
-      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d4+3 per.</div></div>
+      <div style="flex:1;"><div class="atk-name">Daga</div><div class="atk-sub">20/60 pies · finesse</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Atq</span><div class="atk-val">+5</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d4+3</div></div>
     </div>
     <div class="atk-row">
       <div style="font-size:1.5rem;">🏹</div>
-      <div style="flex:1;"><div class="atk-name">Ballesta Ligera</div><div class="atk-sub">80/320 pies (16/64 casillas) · 2 manos · 20 virotes</div></div>
-      <div class="atk-stat"><span class="atk-lbl">Ataque</span><div class="atk-val">+5</div></div>
-      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d8+3 per.</div></div>
+      <div style="flex:1;"><div class="atk-name">Ballesta Ligera</div><div class="atk-sub">80/320 pies · 2M · 20 virotes</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Atq</span><div class="atk-val">+5</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d8+3</div></div>
     </div>
     <div class="atk-row">
       <div style="font-size:1.5rem;">🪵</div>
-      <div style="flex:1;"><div class="atk-name">Gran Clava (2 manos)</div><div class="atk-sub">Cuerpo a cuerpo</div></div>
-      <div class="atk-stat"><span class="atk-lbl">Ataque</span><div class="atk-val">+2</div></div>
-      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d8 cont.</div></div>
+      <div style="flex:1;"><div class="atk-name">Gran Clava (2M)</div><div class="atk-sub">Cuerpo a cuerpo</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Atq</span><div class="atk-val">+2</div></div>
+      <div class="atk-stat"><span class="atk-lbl">Daño</span><div style="font-size:0.75rem;color:var(--dim);">1d8</div></div>
     </div>
   </div>
 
-  <div class="panel">
-    <div class="ptitle">💀 Salvaciones de Muerte — Solo cuando estás en 0 PG</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
-      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--safe);min-width:65px;">✓ Éxitos</span>
-      <div style="display:flex;gap:6px;" id="ds-s">
-        <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
-        <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
-        <div class="ds-dot s" onclick="toggleDS(this,'s')"></div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--danger);min-width:65px;">✗ Fallos</span>
-      <div style="display:flex;gap:6px;" id="ds-x">
-        <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
-        <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
-        <div class="ds-dot x" onclick="toggleDS(this,'x')"></div>
-      </div>
-    </div>
-    <div style="font-size:0.72rem;color:var(--dim);margin-top:8px;font-style:italic;">3 éxitos = estabilizado · 3 fallos = muerte</div>
-    <button onclick="resetDS()" style="margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;padding:4px 10px;border-radius:4px;cursor:pointer;text-transform:uppercase;">Resetear</button>
-  </div>
-
+  <!-- Notas -->
   <div class="panel">
     <div class="ptitle">📝 Notas de Sesión</div>
-    <textarea class="notes" placeholder="Anotá condiciones activas, objetivos, pistas, nombre de NPCs..."></textarea>
+    <textarea class="notes" placeholder="Condiciones, objetivos, NPCs, pistas..."></textarea>
+  </div>
+
+  <!-- Dados -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="ptitle">🎲 Dados Rápidos</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;">
+      <button onclick="rollDice(20,6,'Ataque Conjuro')" style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🎯 d20+6<br><span style="font-size:0.55rem;color:var(--dim);">Ataque conjuro</span></button>
+      <button onclick="rollDice(20,0,'Salvación')" style="background:rgba(200,168,75,0.08);border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🛡 d20<br><span style="font-size:0.55rem;color:var(--dim);">Salvación</span></button>
+      <button onclick="rollDice(20,5,'Iniciativa')" style="background:rgba(78,203,122,0.08);border:1px solid var(--safe);color:var(--safe);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">⚡ d20+5<br><span style="font-size:0.55rem;color:var(--dim);">Iniciativa</span></button>
+      <button onclick="rollDice(10,0,'Saeta de Fuego')" style="background:rgba(255,100,0,0.08);border:1px solid #ff6600;color:#ff8833;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🔥 1d10<br><span style="font-size:0.55rem;color:var(--dim);">Saeta de Fuego</span></button>
+      <button onclick="rollDice(8,0,'Toque Gélido / Escarcha')" style="background:rgba(128,212,255,0.08);border:1px solid #80d4ff;color:#80d4ff;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">❄ 1d8<br><span style="font-size:0.55rem;color:var(--dim);">Gélido / Escarcha</span></button>
+      <button onclick="rollMultiDice([[3,6],[3,8],[2,8]],'Área (3d6/3d8/2d8)')" style="background:rgba(255,160,60,0.08);border:1px solid #ffaa44;color:#ffaa44;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">💥 Área<br><span style="font-size:0.55rem;color:var(--dim);">3d6 · 3d8 · 2d8</span></button>
+      <button onclick="rollMultiDice([[3,4,3]],'Proyectil Mágico (3×1d4+1)')" style="background:rgba(200,200,255,0.08);border:1px solid #c8c8ff;color:#c8c8ff;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">⚡ 3×(1d4+1)<br><span style="font-size:0.55rem;color:var(--dim);">Proy. Mágico</span></button>
+      <button onclick="rollDice(6,0,'Dado de Golpe')" style="background:rgba(224,85,85,0.08);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">💚 1d6<br><span style="font-size:0.55rem;color:var(--dim);">Dado de golpe</span></button>
+      <button onclick="rollDice(20,0,'Genérico')" style="background:rgba(150,150,150,0.08);border:1px solid #888;color:#aaa;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1px;padding:10px 6px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🎲 d20<br><span style="font-size:0.55rem;color:var(--dim);">Genérico</span></button>
+    </div>
+    <div id="dice-result" style="display:none;background:#030e17;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div id="dice-label" style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;"></div>
+      <div id="dice-rolls" style="font-size:0.75rem;color:var(--dim);margin-bottom:4px;"></div>
+      <div id="dice-total" style="font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:var(--accent);text-shadow:0 0 20px var(--accent);line-height:1;"></div>
+      <div id="dice-breakdown" style="font-size:0.7rem;color:var(--dim);margin-top:4px;"></div>
+    </div>
   </div>
 </div>
-
 <!-- ===== CONJUROS ===== -->
 <div id="page-conjuros" class="page">
-  <div class="info">🎯 <strong>CD Conjuros: 14</strong> · <strong>Ataque de conjuro: +6</strong> · Los trucos son <strong>uso ilimitado</strong> · Tocá cada conjuro para ver todos los detalles</div>
+  <div class="info">🎯 <strong>CD Conjuros: 14</strong> · <strong>Ataque de conjuro: +6</strong> · Los trucos son <strong>uso ilimitado</strong></div>
 
-  <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;">❄ Trucos — Sin límite de usos</div>
-
-  <!-- TOQUE GELIDO -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('tg')">
-      <div class="spell-icon">💀</div>
-      <div class="spell-info">
-        <div class="spell-name">Toque Gélido</div>
-        <div class="spell-quick">Ataque d20+6 · 120 pies (24 casillas) · 1d8 necrótico · niega curación</div>
-      </div>
-      <div class="badges"><span class="badge bc">Truco</span><span class="badge bd">Daño</span><span class="badge bk">Control</span></div>
-    </div>
-    <div class="spell-body" id="spell-tg">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">120 pies (24 cas.)</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">1 asalto</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Cómo lanzar</span><div class="sval">d20+6 vs CA</div></div>
-        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#ff8080;">1d8 nec.</div></div>
-        <div class="sbox" style="grid-column:span 2"><span class="slabel">Efecto extra</span><div class="sval" style="color:var(--gold);">Sin curación hasta tu turno</div></div>
-      </div>
-      <div class="sdesc">Creás una mano esquelética que agarra al enemigo. Si impactás, sufre <strong style="color:#ff8080">1d8 de daño necrótico</strong> y <strong style="color:var(--ice)">no puede recuperar PG</strong> hasta tu próximo turno. Vs no-muertos: además tienen desventaja para atacarte.</div>
-      <div class="stip">💡 <strong>Cuándo usarlo:</strong> Contra enemigos que se curan o regeneran. El 1d8 es necrótico (no frío), pero la negación de curación es letal contra jefes.</div>
-    </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <button onclick="openSpellSelector('truco')" style="flex:1;min-width:140px;background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:2px;padding:10px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🔄 Cambiar Trucos</button>
+    <button onclick="openSpellSelector('n1')" style="flex:1;min-width:140px;background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:2px;padding:10px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🔄 Cambiar Conjuros N1</button>
   </div>
 
-  <!-- RAYO DE ESCARCHA -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('re')">
-      <div class="spell-icon">❄</div>
-      <div class="spell-info">
-        <div class="spell-name">Rayo de Escarcha</div>
-        <div class="spell-quick">Ataque d20+6 · 60 pies (12 casillas) · 1d8 frío · reduce velocidad 10 pies</div>
-      </div>
-      <div class="badges"><span class="badge bc">Truco</span><span class="badge bd">Daño</span><span class="badge bk">Control</span></div>
-    </div>
-    <div class="spell-body" id="spell-re">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">60 pies (12 cas.)</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Cómo lanzar</span><div class="sval">d20+6 vs CA</div></div>
-        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#80d4ff;">1d8 frío</div></div>
-        <div class="sbox" style="grid-column:span 2"><span class="slabel">Efecto extra</span><div class="sval" style="color:var(--gold);">Vel. −10 pies (2 cas.) hasta tu turno</div></div>
-      </div>
-      <div class="sdesc">Un rayo blancoazulado sale disparado hacia el objetivo. Si impactás, sufre <strong style="color:#80d4ff">1d8 de daño por frío</strong> y su <strong style="color:var(--ice)">velocidad se reduce 10 pies (2 casillas)</strong> hasta el inicio de tu próximo turno.</div>
-      <div class="stip">💡 <strong>Tu truco más temático.</strong> Usalo para ralentizar enemigos que vienen hacia vos. Tu sangre de dragón de hielo lo hace sentir propio.</div>
-    </div>
-  </div>
-
-  <!-- SAETA DE FUEGO -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('sf')">
-      <div class="spell-icon">🔥</div>
-      <div class="spell-info">
-        <div class="spell-name">Saeta de Fuego</div>
-        <div class="spell-quick">Ataque d20+6 · 120 pies (24 casillas) · 1d10 fuego — mayor daño de trucos</div>
-      </div>
-      <div class="badges"><span class="badge bc">Truco</span><span class="badge bd">Mayor Daño</span></div>
-    </div>
-    <div class="spell-body" id="spell-sf">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">120 pies (24 cas.)</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Cómo lanzar</span><div class="sval">d20+6 vs CA</div></div>
-        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#ffaa44;">1d10 fuego</div></div>
-        <div class="sbox" style="grid-column:span 2"><span class="slabel">Extra</span><div class="sval">Prende objetos inflamables</div></div>
-      </div>
-      <div class="sdesc">Arrojás una mota de fuego. Con un impacto, el objetivo sufre <strong style="color:#ffaa44">1d10 de daño por fuego</strong>. Objetos inflamables se prenden si no están sujetados.</div>
-      <div class="stip">💡 <strong>Mayor daño sin gastar recursos.</strong> Puro daño a máxima distancia. Ojo: algunos enemigos resisten el fuego.</div>
-    </div>
-  </div>
-
-  <!-- PRESTIDIGITACIÓN -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('pre')">
-      <div class="spell-icon">✨</div>
-      <div class="spell-info">
-        <div class="spell-name">Prestidigitación</div>
-        <div class="spell-quick">Sin tirada · 10 pies · Efectos mágicos menores · hasta 1h</div>
-      </div>
-      <div class="badges"><span class="badge bc">Truco</span></div>
-    </div>
-    <div class="spell-body" id="spell-pre">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">10 pies</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Hasta 1 hora</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="sdesc">Efectos mágicos menores a voluntad: encender/apagar velas, limpiar o ensuciar un objeto, enfriar o calentar algo pequeño, crear un sonido, un olor leve, o una imagen ilusoria del tamaño de tu mano (dura 1h), marcar un objeto.</div>
-      <div class="stip">💡 <strong>Roleplay puro.</strong> Enfriar tu bebida, secar tu ropa, crear un sonido de distracción. Fuera de combate es muy útil.</div>
-    </div>
-  </div>
+  <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;">❄ Trucos Preparados — <span id="truco-count">0/4</span></div>
+  <div id="trucos-list"></div>
 
   <div class="div"></div>
-  <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;">🔮 Conjuros Nivel 1 — Gastan espacio de conjuro</div>
+  <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;">🔮 Conjuros Nivel 1 Preparados — <span id="n1-count">0/3</span></div>
+  <div id="n1-list"></div>
+</div>
 
-  <!-- PROYECTIL MAGICO -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('pm')">
-      <div class="spell-icon">⚡</div>
-      <div class="spell-info">
-        <div class="spell-name">Proyectil Mágico</div>
-        <div class="spell-quick">SIN TIRADA · 120 pies (24 casillas) · 3×(1d4+1) fuerza — NUNCA FALLA</div>
-      </div>
-      <div class="badges"><span class="badge b1">Nivel 1</span><span class="badge ba">Auto</span></div>
+<!-- ===== MODAL SELECTOR ===== -->
+<div id="spell-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;padding:20px;overflow-y:auto;">
+  <div style="max-width:700px;margin:0 auto;background:var(--panel);border:1px solid var(--border-bright);border-radius:12px;padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+      <div style="font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:var(--accent);" id="modal-title">Seleccionar Conjuros</div>
+      <button onclick="closeSpellSelector()" style="background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;">✕</button>
     </div>
-    <div class="spell-body" id="spell-pm">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">120 pies (24 cas.)</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="srow">
-        <div class="sbox" style="grid-column:span 2"><span class="slabel">Cómo lanzar</span><div class="sval" style="color:var(--safe);">SIN TIRADA — impacto automático</div></div>
-        <div class="sbox" style="grid-column:span 2"><span class="slabel">Daño</span><div class="sval" style="color:var(--safe);">3 × (1d4+1) fuerza</div></div>
-      </div>
-      <div class="sdesc">Creás <strong style="color:var(--safe)">3 dardos brillantes de fuerza mágica</strong>. Cada uno impacta automáticamente. Podés dirigirlos todos a un objetivo o distribuirlos entre varios.</div>
-      <div class="stip">💡 <strong>Tu seguro de vida.</strong> No importa la CA — siempre impacta. Con Conjuro Potenciado (1 pto hechicería) retirás hasta 3 dados.</div>
-      <button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>
+    <div style="background:rgba(224,168,48,0.08);border:1px solid var(--warn);border-radius:6px;padding:10px;margin-bottom:14px;font-size:0.78rem;color:var(--warn);">
+      💡 Marcá hasta <strong><span id="modal-max">4</span></strong> conjuros. Podés cambiarlos al hacer un Descanso Largo (meditar).
     </div>
-  </div>
-
-  <!-- MANOS ARDIENTES -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('ma')">
-      <div class="spell-icon">🔥</div>
-      <div class="spell-info">
-        <div class="spell-name">Manos Ardientes</div>
-        <div class="spell-quick">Salvación Des CD14 · Personal — cono 15 pies (3 casillas) · 3d6 fuego</div>
-      </div>
-      <div class="badges"><span class="badge b1">Nivel 1</span><span class="badge bd">Área</span></div>
-    </div>
-    <div class="spell-body" id="spell-ma">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">Personal (cono 15 pies, 3 cas.)</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Salvación</span><div class="sval">Des CD 14</div></div>
-        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#ffaa44;">3d6 fuego</div></div>
-        <div class="sbox"><span class="slabel">Si falla</span><div class="sval">Daño completo</div></div>
-        <div class="sbox"><span class="slabel">Si pasa</span><div class="sval">Mitad</div></div>
-      </div>
-      <div class="sdesc">Llamas en cono de 15 pies (3 casillas) desde tus manos. <strong style="color:#ffaa44">Todos los enemigos</strong> en el área hacen salvación de Destreza contra CD 14. Fallo = 3d6 fuego completo. Éxito = mitad. Prende objetos inflamables.</div>
-      <div class="stip">💡 <strong>Usalo en grupos.</strong> 3+ enemigos juntos = devastador. Con Conjuro Cuidadoso (1 pto hechicería) tus aliados quedan a salvo del cono.</div>
-      <button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>
-    </div>
-  </div>
-
-  <!-- ONDA ATRONADORA -->
-  <div class="spell-card">
-    <div class="spell-hdr" onclick="toggleSpell('oa')">
-      <div class="spell-icon">💨</div>
-      <div class="spell-info">
-        <div class="spell-name">Onda Atronadora</div>
-        <div class="spell-quick">Salvación Con CD14 · Personal — cubo 15 pies (3 casillas) · 2d8 sónico + empuja</div>
-      </div>
-      <div class="badges"><span class="badge b1">Nivel 1</span><span class="badge bd">Daño</span><span class="badge bk">Empuja</span></div>
-    </div>
-    <div class="spell-body" id="spell-oa">
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Alcance</span><div class="sval">Personal (cubo 15 pies, 3 cas.)</div></div>
-        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval">1 acción</div></div>
-        <div class="sbox"><span class="slabel">Duración</span><div class="sval">Instantáneo</div></div>
-        <div class="sbox"><span class="slabel">Componentes</span><div class="sval">V, S</div></div>
-      </div>
-      <div class="srow">
-        <div class="sbox"><span class="slabel">Salvación</span><div class="sval">Con CD 14</div></div>
-        <div class="sbox"><span class="slabel">Daño</span><div class="sval" style="color:#aaddff;">2d8 sónico</div></div>
-        <div class="sbox"><span class="slabel">Si falla</span><div class="sval">Daño + 10 pies emp.</div></div>
-        <div class="sbox"><span class="slabel">Si pasa</span><div class="sval">Mitad</div></div>
-      </div>
-      <div class="sdesc">Onda desde vos. Criaturas en el cubo de 15 pies (3 casillas) tiran salvación de Constitución CD 14. <strong style="color:#aaddff">Fallo:</strong> 2d8 sónico + empujadas 10 pies (2 casillas) lejos de vos. <strong style="color:#aaddff">Éxito:</strong> solo mitad. Se escucha hasta 300 pies (60 casillas, 90m).</div>
-      <div class="stip">💡 <strong>Tu salvavidas si te rodean.</strong> Aleja a todos los que te encierran. Reposicioná enemigos antes de tirar Manos Ardientes.</div>
-      <button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>
-    </div>
+    <div id="modal-spell-list"></div>
+    <button onclick="closeSpellSelector()" style="margin-top:14px;width:100%;background:var(--accent);border:none;color:#000;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:2px;padding:12px;border-radius:6px;cursor:pointer;text-transform:uppercase;font-weight:700;">✓ Confirmar selección</button>
   </div>
 </div>
 
@@ -613,32 +733,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <!-- ===== EQUIPO ===== -->
 <div id="page-equipo" class="page">
-  <div class="panel">
-    <div class="ptitle">⚔ Armas</div>
-    <div class="eq-row"><div style="font-size:1.1rem;">🗡</div><div class="eq-name">Daga</div><div class="eq-qty">+5 · 1d4+3 perforante · CC o arrojadiza 6m</div></div>
-    <div class="eq-row"><div style="font-size:1.1rem;">🏹</div><div class="eq-name">Ballesta Ligera</div><div class="eq-qty">+5 · 1d8+3 perforante · 24m/96m</div></div>
-    <div class="eq-row"><div style="font-size:1.1rem;">🪵</div><div class="eq-name">Gran Clava (2 manos)</div><div class="eq-qty">+2 · 1d8 contundente</div></div>
-  </div>
 
-  <div class="panel">
-    <div class="ptitle">🎒 Mochila</div>
-    <div class="eq-row"><div style="font-size:1rem;">🛏</div><div class="eq-name">Saco de dormir</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🍳</div><div class="eq-name">Equipo de cocina</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🔥</div><div class="eq-name">Yesquero</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🕯</div><div class="eq-name">Antorchas</div><div class="eq-qty">×10</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🍱</div><div class="eq-name">Raciones de viaje</div><div class="eq-qty">×10 días</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🧴</div><div class="eq-name">Odre de agua</div><div class="eq-qty">×1</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🪢</div><div class="eq-name">Cuerda de cáñamo</div><div class="eq-qty">50 pies (15m)</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🪶</div><div class="eq-name">Pluma + tintero</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🔪</div><div class="eq-name">Cuchillo pequeño</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">📜</div><div class="eq-name">Carta sin leer</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">👘</div><div class="eq-name">Ropa común</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">🥾</div><div class="eq-name">Par de botas</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">👝</div><div class="eq-name">Bolsa de componentes</div></div>
-    <div class="eq-row"><div style="font-size:1rem;">⛽</div><div class="eq-name">2 de gas</div></div>
-  </div>
-
-  <div class="panel">
+  <!-- Monedas -->
+  <div class="panel" style="margin-bottom:10px;">
     <div class="ptitle">💰 Monedas</div>
     <div class="grid3">
       <div style="text-align:center;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:12px;">
@@ -670,23 +767,474 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
   </div>
+
+  <!-- Armas dinámicas -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">
+      <div class="ptitle" style="margin-bottom:0;">⚔ Armas</div>
+      <button onclick="openAddWeapon()" style="background:rgba(224,85,85,0.08);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;padding:6px 12px;border-radius:6px;cursor:pointer;text-transform:uppercase;">+ Arma</button>
+    </div>
+    <div id="weapons-list"></div>
+  </div>
+
+  <!-- Inventario dinámico -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">
+      <div class="ptitle" style="margin-bottom:0;">🎒 Inventario</div>
+      <button onclick="openAddItem()" style="background:rgba(0,207,255,0.1);border:1px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;padding:6px 12px;border-radius:6px;cursor:pointer;text-transform:uppercase;">+ Agregar</button>
+    </div>
+    <div id="inventory-list"></div>
+    <div id="inventory-empty" style="display:none;text-align:center;padding:20px;color:var(--dim);font-size:0.8rem;font-style:italic;">Sin items — tocá + Agregar</div>
+  </div>
+
 </div>
+
+<!-- MODAL ARMA -->
+<div id="weapon-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1001;padding:20px;align-items:center;justify-content:center;">
+  <div style="background:var(--panel);border:1px solid rgba(224,85,85,0.4);border-radius:12px;padding:20px;width:100%;max-width:440px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--danger);" id="weapon-modal-title">⚔ Agregar Arma</div>
+      <button onclick="closeWeaponModal()" style="background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:60px 1fr;gap:10px;margin-bottom:12px;">
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Ícono</label>
+        <input id="wpn-icon" value="🗡" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:1.3rem;padding:6px;border-radius:6px;text-align:center;outline:none;">
+      </div>
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Nombre *</label>
+        <input id="wpn-name" placeholder="Ej: Espada corta" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Bono ataque</label>
+        <input id="wpn-atk" placeholder="+5" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Cinzel',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Daño</label>
+        <input id="wpn-dmg" placeholder="1d6+3 per." style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Cinzel',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Alcance / Notas</label>
+        <input id="wpn-range" placeholder="CC · 20/60 pies" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.85rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Munición (si aplica)</label>
+        <input id="wpn-ammo" type="number" min="0" placeholder="0 = sin munición" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Cinzel',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Nombre munición</label>
+      <input id="wpn-ammo-name" placeholder="Virotes / Flechas / Dardos..." style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.85rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Etiquetas (separadas por coma)</label>
+      <input id="wpn-tags" placeholder="Perforante, Finura, Ligera..." style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.85rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Descripción táctica</label>
+      <textarea id="wpn-desc" placeholder="Qué hace, cómo usarla, propiedades especiales..." style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.85rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;resize:vertical;min-height:60px;" onfocus="this.style.borderColor='var(--danger)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="saveWeapon()" style="flex:1;background:rgba(224,85,85,0.15);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:2px;padding:11px;border-radius:6px;cursor:pointer;text-transform:uppercase;font-weight:700;">✓ Guardar</button>
+      <button id="wpn-delete-btn" onclick="deleteWeapon()" style="display:none;background:rgba(224,85,85,0.1);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:2px;padding:11px 16px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🗑</button>
+    </div>
+  </div>
+</div>
+
+<div id="item-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1001;padding:20px;align-items:center;justify-content:center;">
+  <div style="background:var(--panel);border:1px solid var(--border-bright);border-radius:12px;padding:20px;width:100%;max-width:440px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--accent);" id="item-modal-title">Agregar Item</div>
+      <button onclick="closeItemModal()" style="background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;">✕</button>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Ícono</label>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;" id="icon-picker">
+      </div>
+      <input id="item-icon" value="📦" style="width:60px;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:1.2rem;padding:6px;border-radius:6px;text-align:center;outline:none;" placeholder="📦">
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Nombre *</label>
+      <input id="item-name" placeholder="Ej: Poción de curación" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;padding:8px 10px;border-radius:6px;outline:none;transition:border-color 0.2s;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Cantidad</label>
+        <input id="item-qty" type="text" placeholder="×1" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Categoría</label>
+        <select id="item-cat" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.85rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Cinzel',serif;">
+          <option value="general">General</option>
+          <option value="consumible">Consumible</option>
+          <option value="magico">Mágico</option>
+          <option value="quest">Quest</option>
+          <option value="herramienta">Herramienta</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:5px;">Notas (opcional)</label>
+      <input id="item-note" placeholder="Ej: Cura 2d4+2 PG" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:0.85rem;padding:8px 10px;border-radius:6px;outline:none;font-family:'Crimson Text',serif;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <div style="display:flex;gap:8px;">
+      <button onclick="saveItem()" style="flex:1;background:var(--accent);border:none;color:#000;font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:2px;padding:11px;border-radius:6px;cursor:pointer;text-transform:uppercase;font-weight:700;">✓ Guardar</button>
+      <button id="item-delete-btn" onclick="deleteItem()" style="display:none;background:rgba(224,85,85,0.1);border:1px solid var(--danger);color:var(--danger);font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:2px;padding:11px 16px;border-radius:6px;cursor:pointer;text-transform:uppercase;">🗑</button>
+    </div>
+  </div>
+</div>
+
 
 </div>
 <div class="toast" id="toast"></div>
 
+<!-- ═══ BARRA FIJA DE COMBATE ═══ -->
+<div class="combat-bar">
+  <div class="combat-bar-inner">
+    <div class="cb-hp">
+      <div class="cb-hp-row">
+        <button class="cb-btn cb-btn-minus" onclick="changeHP(-1)">−</button>
+        <div style="text-align:center;flex:1;padding:0 6px;">
+          <div class="cb-hp-val" id="cb-hp-val">19</div>
+          <div class="cb-bar-bg"><div class="cb-bar-fill" id="cb-hp-bar" style="width:100%;background:linear-gradient(90deg,#1a7aaa,#00cfff);"></div></div>
+        </div>
+        <button class="cb-btn cb-btn-plus" onclick="changeHP(1)">+</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:2px;">
+        <span style="font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:1px;color:var(--dim);">❤ PG</span>
+        <span style="font-size:0.55rem;color:var(--dim);font-family:'Cinzel',serif;">/ 19</span>
+      </div>
+    </div>
+    <div class="cb-resource">
+      <div class="cb-res-label">N1</div>
+      <div class="cb-res-dots" id="cb-slots-n1">
+        <div class="cb-slot" onclick="cbToggleSlot(0)"></div>
+        <div class="cb-slot" onclick="cbToggleSlot(1)"></div>
+        <div class="cb-slot" onclick="cbToggleSlot(2)"></div>
+      </div>
+      <div id="cb-slot-icons" style="display:flex;gap:3px;margin-top:2px;justify-content:center;"></div>
+    </div>
+    <div class="cb-resource">
+      <div class="cb-res-label">Hechi.</div>
+      <div class="cb-res-dots" id="cb-sp-dots">
+        <div class="cb-sp" onclick="cbToggleSP(0)"></div>
+        <div class="cb-sp" onclick="cbToggleSP(1)"></div>
+      </div>
+    </div>
+    <div class="cb-round">
+      <div class="cb-res-label">Asalto</div>
+      <div class="cb-round-val" id="cb-round-val">1</div>
+      <div class="cb-round-btns">
+        <button class="cb-round-btn" onclick="changeRound(-1)">−</button>
+        <button class="cb-round-btn" onclick="changeRound(1)">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
-const DEFAULT={hp:19,slotsN1:[false,false,false],sp:[false,false],dsS:[false,false,false],dsX:[false,false,false],coins:{gold:0,silver:0,copper:0},notes:''};
+// ─── BASE DE DATOS DE CONJUROS ──────────────────────────────────
+const SPELLS = {
+  // ─── TRUCOS ───
+  'toque-gelido': {id:'toque-gelido',nivel:'truco',nombre:'Toque Gélido',icon:'💀',
+    quick:'Ataque d20+6 · 120 pies (24 cas.) · 1d8 necrótico · niega curación',
+    alcance:'120 pies (24 cas.)',lanzamiento:'1 acción',duracion:'1 asalto',comp:'V, S',
+    tirada:'d20+6 vs CA',dano:'1d8 nec.',
+    desc:'Mano esquelética fantasmal. Con impacto: 1d8 necrótico y no puede recuperar PG hasta tu próximo turno. Vs no-muertos: desventaja para atacarte.',
+    tip:'Contra enemigos que se curan o regeneran. La negación de curación es letal contra jefes.',
+    tags:['attack','dmg','necro','slow']},
+  'rayo-escarcha':{id:'rayo-escarcha',nivel:'truco',nombre:'Rayo de Escarcha',icon:'❄',
+    quick:'Ataque d20+6 · 60 pies (12 cas.) · 1d8 frío · velocidad −10 pies',
+    alcance:'60 pies (12 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'d20+6 vs CA',dano:'1d8 frío',
+    desc:'Rayo blancoazulado. Con impacto: 1d8 frío y velocidad −10 pies (2 cas.) hasta tu próximo turno.',
+    tip:'Tu truco más temático. Ralentiza enemigos que se acercan o huyen.',
+    tags:['attack','dmg','cold','slow']},
+  'saeta-fuego':{id:'saeta-fuego',nivel:'truco',nombre:'Saeta de Fuego',icon:'🔥',
+    quick:'Ataque d20+6 · 120 pies (24 cas.) · 1d10 fuego',
+    alcance:'120 pies (24 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'d20+6 vs CA',dano:'1d10 fuego',
+    desc:'Mota de fuego. Con impacto: 1d10 fuego. Prende objetos inflamables que no estén sujetados.',
+    tip:'Mayor daño sin gastar recursos. Puro daño a máxima distancia.',
+    tags:['attack','dmg','fire']},
+  'prestidigitacion':{id:'prestidigitacion',nivel:'truco',nombre:'Prestidigitación',icon:'✨',
+    quick:'Sin tirada · 10 pies · Efectos mágicos menores · hasta 1h',
+    alcance:'10 pies',lanzamiento:'1 acción',duracion:'Hasta 1 hora',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Efectos menores: encender/apagar velas, limpiar, enfriar/calentar, crear sonido/olor/imagen pequeña, marcar objeto.',
+    tip:'Roleplay puro. Fuera de combate es muy útil para mil cosas.',
+    tags:['utility']},
+  'amigos':{id:'amigos',nivel:'truco',nombre:'Amigos',icon:'🗣',
+    quick:'Personal · Ventaja en pruebas de Carisma · hasta 1 min',
+    alcance:'Personal',lanzamiento:'1 acción',duracion:'Conc. 1 minuto',comp:'S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Ventaja en todas las pruebas de Carisma contra una criatura que no sea hostil. Al finalizar, la criatura sabe que fue manipulada mágicamente.',
+    tip:'Útil fuera de combate. Cuidado: puede volverse hostil cuando termina.',
+    tags:['mental','utility','conc']},
+  'contacto-electrizante':{id:'contacto-electrizante',nivel:'truco',nombre:'Contacto Electrizante',icon:'⚡',
+    quick:'Ataque CC d20+6 · Toque · 1d8 eléctrico · sin reacciones',
+    alcance:'Toque (cuerpo a cuerpo)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'d20+6 vs CA (CC)',dano:'1d8 eléctrico',
+    desc:'Relámpago desde tu mano. Ataque CC. Ventaja si el objetivo lleva armadura metálica. Impacto: 1d8 eléctrico + no puede usar reacciones hasta su próximo turno.',
+    tip:'Cuerpo a cuerpo — peligroso para hechicero. Ideal contra enemigos con armadura de metal.',
+    tags:['attack','dmg','elec']},
+  'ilusion-menor':{id:'ilusion-menor',nivel:'truco',nombre:'Ilusión Menor',icon:'👻',
+    quick:'30 pies (6 cas.) · Crea sonido o imagen · 1 minuto',
+    alcance:'30 pies (6 cas.)',lanzamiento:'1 acción',duracion:'1 minuto',comp:'S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Crea un sonido o una imagen de un objeto dentro del alcance. La imagen no puede mostrar criaturas en movimiento.',
+    tip:'Distracción clásica. Sonido de pasos, imagen de pared falsa, etc.',
+    tags:['utility']},
+  'impacto-verdadero':{id:'impacto-verdadero',nivel:'truco',nombre:'Impacto Verdadero',icon:'🎯',
+    quick:'30 pies · Ventaja en tu próximo ataque',
+    alcance:'30 pies (6 cas.)',lanzamiento:'1 acción',duracion:'Conc. 1 asalto',comp:'S',
+    tirada:'Automático',dano:'—',
+    desc:'Sin daño. En tu siguiente turno, tenés ventaja en tu primera tirada de ataque contra el objetivo.',
+    tip:'Gastás una acción para mejorar la siguiente. Útil contra objetivos de CA alta.',
+    tags:['buff','conc']},
+  'luces-danzantes':{id:'luces-danzantes',nivel:'truco',nombre:'Luces Danzantes',icon:'💡',
+    quick:'120 pies (24 cas.) · 4 luces flotantes · hasta 1 min',
+    alcance:'120 pies (24 cas.)',lanzamiento:'1 acción',duracion:'Conc. 1 minuto',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Creá hasta 4 luces del tamaño de antorchas. Podés combinarlas en forma humanoide. Cada una ilumina tenuemente 10 pies.',
+    tip:'Iluminar zonas sin revelar tu posición. También como distracción.',
+    tags:['utility','conc']},
+  'luz':{id:'luz',nivel:'truco',nombre:'Luz',icon:'🔦',
+    quick:'Toque · Objeto ilumina 20 pies · 1 hora',
+    alcance:'Toque',lanzamiento:'1 acción',duracion:'1 hora',comp:'V, M',
+    tirada:'Automático',dano:'—',
+    desc:'Un objeto que toques desprende luz brillante en 20 pies (4 cas.) y tenue otros 20 pies. Podés cubrirla para bloquearla.',
+    tip:'La antorcha mágica eterna. Útil para exploración en dungeons.',
+    tags:['utility']},
+  'mano-mago':{id:'mano-mago',nivel:'truco',nombre:'Mano de Mago',icon:'👋',
+    quick:'30 pies · Mano espectral manipula objetos · 1 min',
+    alcance:'30 pies (9m)',lanzamiento:'1 acción',duracion:'1 minuto',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Mano espectral flotante. Manipula objetos, abre puertas no cerradas, recoge cosas, vierte contenidos. No puede atacar ni cargar más de 10 libras.',
+    tip:'Desactivar trampas a distancia, recoger algo sin acercarte, abrir cerrojos.',
+    tags:['utility']},
+  'mensaje':{id:'mensaje',nivel:'truco',nombre:'Mensaje',icon:'💬',
+    quick:'120 pies (24 cas.) · Susurro mágico privado',
+    alcance:'120 pies (24 cas.)',lanzamiento:'1 acción',duracion:'1 asalto',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Susurrás un mensaje a una criatura que puedas ver. Solo ella lo oye y puede responderte susurrando. No necesitás línea de visión completa.',
+    tip:'Coordinación silenciosa con el grupo en infiltración.',
+    tags:['utility']},
+  'remendar':{id:'remendar',nivel:'truco',nombre:'Remendar',icon:'🔧',
+    quick:'Toque · Repara objetos rotos · 1 min lanzamiento',
+    alcance:'Toque',lanzamiento:'1 minuto',duracion:'Instantáneo',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Repara una única rotura o rasgadura: eslabón de cadena, llave partida, capa rasgada, odre perforado. No funciona en objetos mágicos.',
+    tip:'Fuera de combate. Útil para reparar equipo después de aventuras.',
+    tags:['utility']},
+  'rociada-veneno':{id:'rociada-veneno',nivel:'truco',nombre:'Rociada de Veneno',icon:'☠',
+    quick:'Salv. Con CD14 · 10 pies · 1d12 veneno',
+    alcance:'10 pies (3m)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'Salv. Con CD 14',dano:'1d12 veneno',
+    desc:'Soplido de gas nocivo. Salvación Constitución CD 14. Falla: 1d12 veneno. Éxito: sin daño.',
+    tip:'Mayor daño de trucos pero alcance muy corto (10 pies). Peligroso para hechicero.',
+    tags:['save','dmg','poison']},
+  'salpicadura-acido':{id:'salpicadura-acido',nivel:'truco',nombre:'Salpicadura de Ácido',icon:'🧪',
+    quick:'Salv. Des CD14 · 60 pies (12 cas.) · 1d6 ácido · 2 objetivos',
+    alcance:'60 pies (12 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'Salv. Des CD 14',dano:'1d6 ácido',
+    desc:'Burbuja de ácido. Afectá 1 criatura, o 2 si están a menos de 5 pies (1 cas.) entre sí. Salvación Destreza: falla 1d6 ácido, éxito sin daño.',
+    tip:'Puede afectar 2 enemigos juntos. Daño bajo pero útil contra grupos apretados.',
+    tags:['save','dmg','acid','area']},
+
+  // ─── NIVEL 1 ───
+  'proyectil-magico':{id:'proyectil-magico',nivel:'n1',nombre:'Proyectil Mágico',icon:'⚡',
+    quick:'SIN TIRADA · 120 pies (24 cas.) · 3×(1d4+1) fuerza — NUNCA FALLA',
+    alcance:'120 pies (24 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'SIN TIRADA — automático',dano:'3 × (1d4+1) fuerza',
+    desc:'3 dardos brillantes de fuerza mágica. Cada uno impacta automáticamente. Podés dirigirlos a un objetivo o varios.',
+    tip:'Tu seguro de vida. No importa la CA — siempre impacta. Con Potenciado retirás hasta 3 dados.',
+    tags:['auto','dmg','force']},
+  'manos-ardientes':{id:'manos-ardientes',nivel:'n1',nombre:'Manos Ardientes',icon:'🔥',
+    quick:'Salv. Des CD14 · Cono 15 pies (3 cas.) · 3d6 fuego',
+    alcance:'Personal (cono 15 pies, 3 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'Salv. Des CD 14',dano:'3d6 fuego',
+    desc:'Cono de llamas desde tus manos. Todos los enemigos en el área hacen salvación de Destreza. Falla = 3d6 completo. Éxito = mitad. Prende objetos.',
+    tip:'En grupos es devastador. Con Cuidadoso aliados se salvan automáticamente.',
+    tags:['save','dmg','fire','area']},
+  'onda-atronadora':{id:'onda-atronadora',nivel:'n1',nombre:'Onda Atronadora',icon:'💨',
+    quick:'Salv. Con CD14 · Cubo 15 pies (3 cas.) · 2d8 sónico + empuja',
+    alcance:'Personal (cubo 15 pies, 3 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'Salv. Con CD 14',dano:'2d8 sónico',
+    desc:'Onda desde vos en cubo 15 pies. Salvación Con. Falla: 2d8 sónico + empujado 10 pies (2 cas.). Éxito: mitad. Se escucha 300 pies.',
+    tip:'Salvavidas si te rodean. Reposicioná enemigos antes de Manos Ardientes.',
+    tags:['save','dmg','sonic','area','push']},
+  'armadura-mago':{id:'armadura-mago',nivel:'n1',nombre:'Armadura de Mago',icon:'🛡',
+    quick:'Personal · CA = 13 + Des sin armadura · 8 horas',
+    alcance:'Personal',lanzamiento:'1 acción',duracion:'8 horas',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Una fuerza mágica protectora te rodea. Tu CA pasa a ser 13 + tu modificador de Destreza mientras no uses armadura. Sin concentración.',
+    tip:'Dura 8 horas. Útil si tu CA base es baja — la tuya es 18 así que no aplica tanto.',
+    tags:['defense','buff']},
+  'caida-plumas':{id:'caida-plumas',nivel:'n1',nombre:'Caída de Plumas',icon:'🪶',
+    quick:'1 reacción · 60 pies (12 cas.) · Anula daño de caída',
+    alcance:'60 pies (12 cas.)',lanzamiento:'1 reacción',duracion:'1 minuto',comp:'V, M',
+    tirada:'Automático',dano:'—',
+    desc:'Elegí hasta 5 criaturas que estén cayendo. Reducen velocidad de caída a 60 pies por asalto. Aterrizan sin daño y de pie.',
+    tip:'Situacional pero salva vidas cuando se necesita.',
+    tags:['defense','utility']},
+  'comprension-idiomatica':{id:'comprension-idiomatica',nivel:'n1',nombre:'Comprensión Idiomática',icon:'📖',
+    quick:'Personal · Entendés cualquier idioma · 1 hora · RITUAL',
+    alcance:'Personal',lanzamiento:'1 acción',duracion:'1 hora',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Entendés literalmente cualquier idioma hablado que oigas. También idiomas escritos que toques. Una página por minuto.',
+    tip:'Como ritual podés lanzarlo sin gastar espacio (10 min). Clave para exploración.',
+    tags:['utility','ritual']},
+  'detectar-magia':{id:'detectar-magia',nivel:'n1',nombre:'Detectar Magia',icon:'🔍',
+    quick:'Personal · Sentís magia a 30 pies · 10 min · RITUAL',
+    alcance:'Personal',lanzamiento:'1 acción',duracion:'Conc. 10 minutos',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Sentís magia a 30 pies (6 cas.). Podés ver el aura de lo mágico y averiguar su escuela.',
+    tip:'Como ritual podés lanzarlo sin espacio. Detecta trampas mágicas, objetos encantados, ilusiones.',
+    tags:['utility','ritual','conc']},
+  'disfrazarse':{id:'disfrazarse',nivel:'n1',nombre:'Disfrazarse',icon:'🎭',
+    quick:'Personal · Cambiás tu apariencia · 1 hora',
+    alcance:'Personal',lanzamiento:'1 acción',duracion:'1 hora',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Cambiás apariencia incluyendo ropa y equipo. Hasta 1 pie más alto/bajo, más gordo/delgado. No podés cambiar el tipo de criatura.',
+    tip:'Ilusión puramente visual. Si alguien te toca descubre el engaño.',
+    tags:['utility']},
+  'dormir':{id:'dormir',nivel:'n1',nombre:'Dormir',icon:'💤',
+    quick:'90 pies · 5d8 PG de criaturas duermen · 1 min',
+    alcance:'90 pies (18 cas.)',lanzamiento:'1 acción',duracion:'1 minuto',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Tirás 5d8. Criaturas en 20 pies (4 cas.) caen inconscientes en orden ascendente de PG actuales. Sin salvación.',
+    tip:'Devastador a nivel bajo. Termina encuentros enteros. No afecta no-muertos ni inmunes al encanto.',
+    tags:['sleep','area','mental']},
+  'escudo':{id:'escudo',nivel:'n1',nombre:'Escudo',icon:'🔰',
+    quick:'1 reacción · +5 CA hasta tu próximo turno · bloquea Proy. Mágico',
+    alcance:'Personal',lanzamiento:'1 reacción',duracion:'1 asalto',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Barrera invisible. +5 CA hasta el inicio de tu próximo turno, incluyendo el ataque que lo activó. No sufrís daño de Proyectil Mágico.',
+    tip:'Tu CA 18 pasa a 23. Anula ataques que te iban a pegar. Uso defensivo clave.',
+    tags:['defense']},
+  'hechizar-persona':{id:'hechizar-persona',nivel:'n1',nombre:'Hechizar Persona',icon:'💗',
+    quick:'Salv. Sab CD14 · 30 pies · Humanoide te ve como amigo · 1h',
+    alcance:'30 pies (6 cas.)',lanzamiento:'1 acción',duracion:'1 hora',comp:'V, S',
+    tirada:'Salv. Sab CD 14',dano:'—',
+    desc:'Humanoide tira salvación Sabiduría (con ventaja si están luchando contra él). Falla: te considera amigo. Al finalizar sabe que fue hechizado.',
+    tip:'Roleplay puro. No lo uses en combate — tiene ventaja si estás atacando.',
+    tags:['mental','save']},
+  'imagen-silenciosa':{id:'imagen-silenciosa',nivel:'n1',nombre:'Imagen Silenciosa',icon:'🖼',
+    quick:'60 pies · Ilusión visual cubo 15 pies · 10 min',
+    alcance:'60 pies (12 cas.)',lanzamiento:'1 acción',duracion:'Conc. 10 minutos',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Imagen de objeto, criatura u otro fenómeno, hasta un cubo de 15 pies. Solo visual (sin sonido ni olor). Podés moverla con tu acción.',
+    tip:'Crear cobertura, ocultar aliados, distraer enemigos. Examen inteligente la descubre.',
+    tags:['utility','conc']},
+  'nube-brumosa':{id:'nube-brumosa',nivel:'n1',nombre:'Nube Brumosa',icon:'🌫',
+    quick:'120 pies · Esfera niebla 20 pies · bloquea visión · 1h',
+    alcance:'120 pies (24 cas.)',lanzamiento:'1 acción',duracion:'Conc. 1 hora',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Esfera de neblina 20 pies (4 cas.) de radio. El área queda muy oscurecida (ceguera total dentro).',
+    tip:'Escape, cobertura, romper línea de visión de arqueros. Todos quedan ciegos dentro.',
+    tags:['area','utility','conc']},
+  'orbe-cromatico':{id:'orbe-cromatico',nivel:'n1',nombre:'Orbe Cromático',icon:'🔮',
+    quick:'Ataque d20+6 · 90 pies · 3d8 del tipo que elijas (req. diamante 50 po)',
+    alcance:'90 pies (18 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S, M',
+    tirada:'d20+6 vs CA',dano:'3d8 tipo elegible',
+    desc:'Esfera de energía. Elegí tipo: ácido, frío, fuego, eléctrico, veneno o sónico. Ataque a distancia. Impacto: 3d8 del tipo elegido.',
+    tip:'Muy flexible — adaptás el daño al enemigo. Requiere diamante de 50 po como componente.',
+    tags:['attack','dmg','area']},
+  'rayo-dolencia':{id:'rayo-dolencia',nivel:'n1',nombre:'Rayo de Dolencia',icon:'🤢',
+    quick:'Ataque d20+6 · 60 pies (12 cas.) · 2d8 veneno · si impacta: salv. Con o envenenado',
+    alcance:'60 pies (12 cas.)',lanzamiento:'1 acción',duracion:'Instantáneo',comp:'V, S',
+    tirada:'d20+6 vs CA (ataque)',dano:'2d8 veneno',
+    desc:'Rayo de energía verdosa. Primero hacés un ataque de conjuro (d20+6 vs CA). Si impacta: 2d8 daño por veneno. Luego el objetivo tira salvación de Constitución: si falla queda envenenado hasta el final de tu próximo turno (desventaja en ataques y pruebas de característica).',
+    tip:'Ataque + condición encadenada. No es salvación para el daño — primero tenés que impactar. El envenenado es muy fuerte si queda activo.',
+    tags:['attack','dmg','poison']},
+  'retirada-expeditiva':{id:'retirada-expeditiva',nivel:'n1',nombre:'Retirada Expeditiva',icon:'💨',
+    quick:'Personal · Acción adicional para Carrera · 10 min',
+    alcance:'Personal',lanzamiento:'1 acción adicional',duracion:'Conc. 10 minutos',comp:'V, S',
+    tirada:'Automático',dano:'—',
+    desc:'Podés usar una acción adicional en cada turno para hacer la acción Carrera (doble movimiento).',
+    tip:'Ideal para escapar o alcanzar posiciones rápido. Triplicás tu movimiento efectivo.',
+    tags:['buff','conc']},
+  'rociada-color':{id:'rociada-color',nivel:'n1',nombre:'Rociada de Color',icon:'🌈',
+    quick:'Cono 15 pies (3 cas.) · 6d10 PG de criaturas cegadas · 1 asalto',
+    alcance:'Personal (cono 15 pies, 3 cas.)',lanzamiento:'1 acción',duracion:'1 asalto',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Tirás 6d10 (≈33 PG promedio). Ese total de PG de criaturas en el cono quedan cegadas 1 asalto. Sin salvación. Ignora inconscientes.',
+    tip:'Sin salvación. A los enemigos ciegos les pegás con ventaja y ellos atacan con desventaja.',
+    tags:['blind','area']},
+  'salto':{id:'salto',nivel:'n1',nombre:'Salto',icon:'🦘',
+    quick:'Toque · Triplica distancia de salto · 1 min',
+    alcance:'Toque',lanzamiento:'1 acción',duracion:'1 minuto',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'La criatura que toques triplica su distancia de salto durante 1 minuto.',
+    tip:'Situacional. Útil para atravesar abismos o escapar saltando edificios.',
+    tags:['buff']},
+  'vida-falsa':{id:'vida-falsa',nivel:'n1',nombre:'Vida Falsa',icon:'💚',
+    quick:'Personal · 1d4+4 PG temporales · 1h',
+    alcance:'Personal',lanzamiento:'1 acción',duracion:'1 hora',comp:'V, S, M',
+    tirada:'Automático',dano:'—',
+    desc:'Ganás 1d4+4 PG temporales por 1 hora. Sin concentración.',
+    tip:'Colchón de vida gratis. Con tus 19 PG base, +5-8 PG extra es muy útil.',
+    tags:['defense','buff']},
+  'virote-encantado':{id:'virote-encantado',nivel:'n1',nombre:'Virote Encantado',icon:'⚡',
+    quick:'Ataque d20+6 · 30 pies · 1d12 eléctrico + repetible · 1 min',
+    alcance:'30 pies (6 cas.)',lanzamiento:'1 acción',duracion:'Conc. 1 minuto',comp:'V, S, M',
+    tirada:'d20+6 vs CA',dano:'1d12 eléctrico',
+    desc:'Arco de relámpago. Impacto: 1d12 eléctrico. En cada turno siguiente podés usar tu acción para repetir 1d12 al mismo objetivo.',
+    tip:'Daño sostenido. 5d12 potenciales en 5 turnos con un solo espacio. Requiere concentración.',
+    tags:['attack','dmg','elec','conc']},
+};
+
+// Lo que el jugador tiene preparado (default)
+const SPELL_LIMITS = {truco:4,n1:3};
+let PREPARED = {
+  truco:['toque-gelido','rayo-escarcha','saeta-fuego','prestidigitacion'],
+  n1:['proyectil-magico','manos-ardientes','onda-atronadora']
+};
+
+// ─── TAG DEFINITIONS ────────────────────────────────────────────
+const TAG_LABELS = {
+  attack:'🎯 Ataque',save:'🛡 Salvación',auto:'⚡ Auto',
+  dmg:'💥 Daño',area:'🔥 Área',
+  fire:'🔥 Fuego',cold:'❄ Frío',elec:'⚡ Eléctrico',poison:'☠ Veneno',
+  necro:'💀 Necrótico',sonic:'💨 Sónico',acid:'🧪 Ácido',force:'✨ Fuerza',
+  slow:'🐢 Ralentiza',sleep:'💤 Duerme',blind:'😵 Ciega',
+  mental:'🎭 Mental',defense:'🛡 Defensa',utility:'✨ Utilidad',
+  conc:'♻ Concentración',ritual:'📖 Ritual',push:'👥 Empuja',buff:'⬆ Buff'
+};
+
+// ─── ESTADO DEFAULT ────────────────────────────────────────────
+const DEFAULT={hp:19,round:1,slotsN1:[false,false,false],sp:[false,false],dsS:[false,false,false],dsX:[false,false,false],coins:{gold:0,silver:0,copper:0},notes:'',charName:'',
+  prepared:{truco:['toque-gelido','rayo-escarcha','saeta-fuego','prestidigitacion'],n1:['proyectil-magico','manos-ardientes','onda-atronadora']}};
+
+let currentRound = 1;
 
 function saveState(){
   const s={
     hp:parseInt(document.getElementById('hp-val').textContent),
+    round:currentRound,
     slotsN1:[...document.querySelectorAll('#slots-n1 .slot-dot')].map(d=>d.classList.contains('used')),
     sp:[...document.querySelectorAll('#sp-dots .sp-dot')].map(d=>d.classList.contains('used')),
     dsS:[...document.querySelectorAll('#ds-s .ds-dot')].map(d=>d.classList.contains('f')),
     dsX:[...document.querySelectorAll('#ds-x .ds-dot')].map(d=>d.classList.contains('f')),
     coins:{gold:parseInt(document.getElementById('gold-val').textContent)||0,silver:parseInt(document.getElementById('silver-val').textContent)||0,copper:parseInt(document.getElementById('copper-val').textContent)||0},
-    notes:document.querySelector('.notes')?.value||''
+    notes:document.querySelector('.notes')?.value||'',
+    charName:document.getElementById('char-name-input')?.value||'',
+    prepared:PREPARED,
+    inventory:inventory,
+    weapons:weapons,
+    turnUsed:turnUsed,
+    slotHistory:slotHistory
   };
   try{localStorage.setItem('hechicero_state',JSON.stringify(s));}catch(e){}
 }
@@ -711,6 +1259,29 @@ function applyState(s){
   document.getElementById('copper-val').textContent=c.copper||0;
   const n=document.querySelector('.notes');
   if(n)n.value=s.notes||'';
+  const nameEl=document.getElementById('char-name-input');
+  if(nameEl&&s.charName)nameEl.value=s.charName;
+  currentRound=s.round||1;
+  if(s.prepared){PREPARED=s.prepared;}
+  turnUsed = (s.turnUsed && typeof s.turnUsed==='object') ? s.turnUsed : {};
+  slotHistory = Array.isArray(s.slotHistory) ? s.slotHistory : [null,null,null];
+  if(s.inventory){
+    inventory=s.inventory.map(item=>{
+      // Migrate: if has qty string but no qtyNum, parse it
+      if(item.qtyNum===undefined && item.qty){
+        const num=parseQty(item.qty);
+        if(num!==null) item.qtyNum=num;
+      }
+      return item;
+    });
+  }else{inventory=[...DEFAULT_INVENTORY];}
+  if(s.weapons){weapons=s.weapons;}else{weapons=DEFAULT_WEAPONS.map(w=>({...w}));}
+  syncCombatBar();
+  renderSlots();
+  renderPreparedSpells();
+  renderQuickSpells();
+  renderInventory();
+  renderWeapons();
 }
 
 function updateHPBar(v){
@@ -719,13 +1290,491 @@ function updateHPBar(v){
   if(pct>60)bar.style.background='linear-gradient(90deg,#1a7aaa,#00cfff)';
   else if(pct>30)bar.style.background='linear-gradient(90deg,#aa7700,#e0a030)';
   else bar.style.background='linear-gradient(90deg,#aa1a1a,#e05555)';
+  // Sync combat bar
+  const cbVal=document.getElementById('cb-hp-val');
+  const cbBar=document.getElementById('cb-hp-bar');
+  if(cbVal)cbVal.textContent=v;
+  if(cbBar){cbBar.style.width=pct+'%';cbBar.style.background=bar.style.background;}
+  // Mostrar panel salvaciones si HP=0
+  const dsPanel=document.getElementById('ds-panel');
+  if(dsPanel)dsPanel.style.display=v===0?'block':'none';
+}
+
+function syncCombatBar(){
+  // Sync slots
+  const mainSlots=[...document.querySelectorAll('#slots-n1 .slot-dot')];
+  const cbSlots=[...document.querySelectorAll('#cb-slots-n1 .cb-slot')];
+  mainSlots.forEach((d,i)=>{if(cbSlots[i])cbSlots[i].classList.toggle('used',d.classList.contains('used'));});
+  // Sync SP
+  const mainSP=[...document.querySelectorAll('#sp-dots .sp-dot')];
+  const cbSP=[...document.querySelectorAll('#cb-sp-dots .cb-sp')];
+  mainSP.forEach((d,i)=>{if(cbSP[i])cbSP[i].classList.toggle('used',d.classList.contains('used'));});
+  // Sync round
+  const rv=document.getElementById('cb-round-val');
+  if(rv)rv.textContent=currentRound;
+  const rvMain=document.getElementById('round-val');
+  if(rvMain)rvMain.textContent=currentRound;
+}
+
+function changeRound(delta){
+  if(delta===0){currentRound=1;}
+  else{currentRound=Math.max(1,currentRound+delta);}
+  // Clear "used this turn" markers on round change
+  if(delta!==0) clearTurnUsed();
+  syncCombatBar();
+  saveState();
+}
+
+// Combat bar slot/SP toggles — operate directly on state
+function cbToggleSlot(idx){
+  const dots=document.querySelectorAll('#slots-n1 .slot-dot');
+  const cbDots=document.querySelectorAll('#cb-slots-n1 .cb-slot');
+  if(!dots[idx]) return;
+  dots[idx].classList.toggle('used');
+  // Clear history if toggled off manually
+  if(!dots[idx].classList.contains('used')) slotHistory[idx]=null;
+  if(cbDots[idx]) cbDots[idx].classList.toggle('used', dots[idx].classList.contains('used'));
+  const avail=[...dots].filter(d=>!d.classList.contains('used')).length;
+  document.getElementById('slots-n1-count').textContent=avail+' / '+dots.length;
+  if(avail===0) toast('Sin espacios N1 — descansá para recuperarlos');
+  renderSlots();
+  renderQuickSpells();
+  saveState();
+}
+function cbToggleSP(idx){
+  const dots=document.querySelectorAll('#sp-dots .sp-dot');
+  const cbDots=document.querySelectorAll('#cb-sp-dots .cb-sp');
+  if(!dots[idx]) return;
+  dots[idx].classList.toggle('used');
+  if(cbDots[idx]) cbDots[idx].classList.toggle('used', dots[idx].classList.contains('used'));
+  const avail=[...dots].filter(d=>!d.classList.contains('used')).length;
+  document.getElementById('sp-count').textContent=avail+' / '+dots.length;
+  saveState();
+}
+
+// Track which spells were used this turn
+let turnUsed = {}; // {spellId: true}
+let slotHistory = [null, null, null]; // icon per N1 slot [0,1,2]
+
+function clearTurnUsed(){
+  turnUsed={};
+  renderQuickSpells();
+  toast('Asalto '+currentRound+' — marcadores limpios');
+}
+
+function castSpell(id){
+  const spell = SPELLS[id];
+  if(!spell) return;
+  const isN1 = spell.nivel==='n1';
+
+  // If already marked used this turn, unmark (toggle)
+  if(turnUsed[id]){
+    turnUsed[id]=false;
+    if(isN1){
+      const dots=document.querySelectorAll('#slots-n1 .slot-dot');
+      // Find last used slot that has this spell's icon
+      let targetIdx=-1;
+      for(let i=dots.length-1;i>=0;i--){
+        if(dots[i].classList.contains('used')&&slotHistory[i]===spell.icon){targetIdx=i;break;}
+      }
+      // If not found by icon, just free last used slot
+      if(targetIdx<0){
+        for(let i=dots.length-1;i>=0;i--){if(dots[i].classList.contains('used')){targetIdx=i;break;}}
+      }
+      if(targetIdx>=0){
+        dots[targetIdx].classList.remove('used');
+        slotHistory[targetIdx]=null;
+        updateSlotCount('n1');
+        renderSlots();
+      }
+    }
+    renderQuickSpells();
+    saveState();
+    return;
+  }
+
+  // Mark as used
+  turnUsed[id]=true;
+
+  // Spend N1 slot automatically
+  if(isN1){
+    const dots=document.querySelectorAll('#slots-n1 .slot-dot');
+    const availIdx=[...dots].findIndex(d=>!d.classList.contains('used'));
+    if(availIdx>=0){
+      dots[availIdx].classList.add('used');
+      slotHistory[availIdx]=spell.icon;
+      updateSlotCount('n1');
+      renderSlots();
+      toast('✨ '+spell.nombre+' — espacio N1 gastado');
+    } else {
+      toast('❌ Sin espacios N1 — marcado como usado igualmente');
+    }
+  } else {
+    toast('✨ '+spell.nombre+' — lanzado (truco, uso ilimitado)');
+  }
+
+  renderQuickSpells();
+  saveState();
+}
+
+function spendSP(id){
+  const dots=document.querySelectorAll('#sp-dots .sp-dot');
+  const avail=[...dots].find(d=>!d.classList.contains('used'));
+  if(avail){
+    avail.classList.add('used');
+    const rem=[...dots].filter(d=>!d.classList.contains('used')).length;
+    document.getElementById('sp-count').textContent=rem+' / '+dots.length;
+    syncCombatBar();
+    saveState();
+    toast('🔮 Metamagia — 1 punto gastado (quedan '+rem+')');
+  } else {
+    toast('❌ Sin puntos de hechicería');
+  }
+}
+
+function renderSlots(){
+  const mainSlots=[...document.querySelectorAll('#slots-n1 .slot-dot')];
+
+  // Panel principal — fila de íconos debajo de los slots
+  const iconRow=document.getElementById('slot-icons-row');
+  if(iconRow){
+    iconRow.innerHTML=mainSlots.map((dot,i)=>{
+      const used=dot.classList.contains('used');
+      const icon=slotHistory[i];
+      if(!used||!icon) return `<div style="width:22px;height:0;"></div>`; // spacer
+      return `<div style="font-size:1rem;width:22px;text-align:center;" title="${icon}">${icon}</div>`;
+    }).join('');
+    // Hide row if no icons
+    iconRow.style.display=slotHistory.some(s=>s)?'flex':'none';
+  }
+
+  // Sync combat bar slots state
+  const cbSlots=document.querySelectorAll('#cb-slots-n1 .cb-slot');
+  mainSlots.forEach((d,i)=>{
+    if(cbSlots[i]) cbSlots[i].classList.toggle('used',d.classList.contains('used'));
+  });
+
+  // Barra inferior — fila de íconos debajo de los cuadraditos
+  const cbIconRow=document.getElementById('cb-slot-icons');
+  if(cbIconRow){
+    cbIconRow.innerHTML=mainSlots.map((dot,i)=>{
+      const used=dot.classList.contains('used');
+      const icon=slotHistory[i];
+      if(!used||!icon) return '';
+      return `<div style="font-size:0.85rem;" title="${icon}">${icon}</div>`;
+    }).join('');
+    cbIconRow.style.display=slotHistory.some((s,i)=>s&&mainSlots[i]?.classList.contains('used'))?'flex':'none';
+  }
+}
+
+// Hook renderSlots into slot operations via direct calls below
+
+function updateSlotCount(level){
+  const dots=document.querySelectorAll('#slots-'+level+' .slot-dot');
+  const avail=[...dots].filter(d=>!d.classList.contains('used')).length;
+  document.getElementById('slots-'+level+'-count').textContent=avail+' / '+dots.length;
+  syncCombatBar();
+}
+
+// Vista rápida de conjuros en combate — con marcador de turno y metamagia
+function renderQuickSpells(){
+  const list=document.getElementById('quick-spells-list');
+  if(!list)return;
+
+  const trucos=PREPARED.truco.filter(id=>SPELLS[id]).map(id=>SPELLS[id]);
+  const n1spells=PREPARED.n1.filter(id=>SPELLS[id]).map(id=>SPELLS[id]);
+
+  // Slots disponibles
+  const slotsLeft=[...document.querySelectorAll('#slots-n1 .slot-dot')].filter(d=>!d.classList.contains('used')).length;
+  const spLeft=[...document.querySelectorAll('#sp-dots .sp-dot')].filter(d=>!d.classList.contains('used')).length;
+
+  function spellRow(s){
+    const used=!!turnUsed[s.id];
+    const isN1=s.nivel==='n1';
+    const noSlots=isN1&&slotsLeft===0&&!used;
+    const tagsHTML=(s.tags||[]).slice(0,3).map(t=>`<span class="tag tag-${t}" style="font-size:0.48rem;">${TAG_LABELS[t]||t}</span>`).join('');
+
+    return `<div onclick="castSpell('${s.id}')" style="
+        background:${used?'rgba(0,207,255,0.04)':'#030e17'};
+        border:1px solid ${used?'var(--accent)':noSlots?'rgba(100,100,100,0.2)':'var(--border)'};
+        border-radius:8px;padding:9px 12px;margin-bottom:6px;
+        display:flex;align-items:center;gap:10px;cursor:pointer;
+        opacity:${noSlots?'0.4':'1'};
+        transition:all 0.2s;
+        ${used?'box-shadow:0 0 12px rgba(0,207,255,0.15);':''}"
+      title="${used?'Tocá para desmarcar':'Tocá para lanzar'}">
+      <div style="font-size:1.3rem;flex-shrink:0;position:relative;">
+        ${s.icon}
+        ${used?`<div style="position:absolute;top:-4px;right:-4px;width:12px;height:12px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);"></div>`:''}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <span style="font-family:'Cinzel',serif;font-size:0.8rem;color:${used?'var(--accent)':'var(--frost)'};">${s.nombre}</span>
+          ${used?`<span style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:1px;color:var(--accent);text-transform:uppercase;">✓ usado</span>`:''}
+          ${isN1&&!used?`<span style="font-family:'Cinzel',serif;font-size:0.52rem;color:var(--dim);">usa espacio N1</span>`:''}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px;margin:3px 0;">${tagsHTML}</div>
+        <div style="font-size:0.68rem;color:var(--dim);">${s.tirada} · <span style="color:${used?'var(--accent)':'var(--accent)'};font-weight:600;">${s.dano}</span></div>
+      </div>
+      ${used&&spLeft>0?`<button onclick="event.stopPropagation();spendSP('${s.id}')" style="background:rgba(0,180,230,0.12);border:1px solid var(--ice2);color:var(--ice2);font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:1px;padding:5px 7px;border-radius:5px;cursor:pointer;text-transform:uppercase;flex-shrink:0;" title="Gastar 1 punto de hechicería para metamagia">🔮 Meta</button>`:''}
+      ${!isN1?`<span style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--ice3);letter-spacing:1px;flex-shrink:0;">∞</span>`:''}
+    </div>`;
+  }
+
+  let html='';
+  if(trucos.length){
+    html+=`<div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;margin-bottom:5px;">❄ Trucos — ilimitados</div>`;
+    html+=trucos.map(spellRow).join('');
+  }
+  if(n1spells.length){
+    html+=`<div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;color:var(--ice3);text-transform:uppercase;margin:10px 0 5px;">🔮 Nivel 1 — ${slotsLeft}/3 espacios</div>`;
+    html+=n1spells.map(spellRow).join('');
+  }
+
+  // Botón limpiar turno
+  const anyUsed=Object.values(turnUsed).some(v=>v);
+  if(anyUsed){
+    html+=`<button onclick="clearTurnUsed()" style="margin-top:8px;width:100%;background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;padding:6px;border-radius:5px;cursor:pointer;text-transform:uppercase;">↺ Limpiar marcadores del turno</button>`;
+  }
+
+  list.innerHTML=html;
+}
+
+
+// ─── RENDER SPELLS ──────────────────────────────────────────────
+// ─── AREA SVG DIAGRAMS ──────────────────────────────────────────
+function getAreaSVG(spell){
+  const a = spell.alcance||'';
+  const s = 80; // viewBox size
+  const C = s/2; // center
+  const u = 8;  // 1 casilla = 8px
+  const caster = `<circle cx="${C}" cy="${C}" r="5" fill="#00cfff" opacity="0.9"/>
+    <text x="${C}" y="${C+1}" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#000">TÚ</text>`;
+
+  if(a.includes('cono')){
+    // Cone from center forward
+    const coneLen = 3*u; // 15 pies = 3 cas
+    return `<svg viewBox="0 0 ${s} ${s}" width="80" height="80" style="display:block;">
+      <rect width="${s}" height="${s}" fill="rgba(0,0,0,0.3)" rx="4"/>
+      <polygon points="${C},${C} ${C-coneLen},${C-coneLen} ${C+coneLen},${C-coneLen}" fill="rgba(255,160,60,0.25)" stroke="rgba(255,160,60,0.7)" stroke-width="1"/>
+      ${caster}
+      <text x="${C}" y="${s-4}" text-anchor="middle" font-size="7" fill="#aaa">Cono 15 pies</text>
+    </svg>`;
+  }
+  if(a.includes('cubo')){
+    const half = 1.5*u;
+    return `<svg viewBox="0 0 ${s} ${s}" width="80" height="80" style="display:block;">
+      <rect width="${s}" height="${s}" fill="rgba(0,0,0,0.3)" rx="4"/>
+      <rect x="${C-half}" y="${C-3*u}" width="${3*u}" height="${3*u}" fill="rgba(170,221,255,0.2)" stroke="rgba(170,221,255,0.7)" stroke-width="1"/>
+      ${caster}
+      <text x="${C}" y="${s-4}" text-anchor="middle" font-size="7" fill="#aaa">Cubo 15 pies</text>
+    </svg>`;
+  }
+  if(a.includes('esfera')||a.includes('radio')){
+    const r = 4*u;
+    return `<svg viewBox="0 0 ${s} ${s}" width="80" height="80" style="display:block;">
+      <rect width="${s}" height="${s}" fill="rgba(0,0,0,0.3)" rx="4"/>
+      <circle cx="${C}" cy="${C}" r="${r}" fill="rgba(100,200,255,0.15)" stroke="rgba(100,200,255,0.6)" stroke-width="1" stroke-dasharray="3,2"/>
+      ${caster}
+      <text x="${C}" y="${s-4}" text-anchor="middle" font-size="7" fill="#aaa">Esfera</text>
+    </svg>`;
+  }
+  if(a.includes('Toque')||a.includes('toque')){
+    return `<svg viewBox="0 0 ${s} ${s}" width="80" height="80" style="display:block;">
+      <rect width="${s}" height="${s}" fill="rgba(0,0,0,0.3)" rx="4"/>
+      <circle cx="${C+u}" cy="${C-u}" r="6" fill="rgba(200,200,100,0.3)" stroke="rgba(200,200,100,0.8)" stroke-width="1.5"/>
+      <line x1="${C}" y1="${C}" x2="${C+u}" y2="${C-u}" stroke="#00cfff" stroke-width="1.5"/>
+      ${caster}
+      <text x="${C}" y="${s-4}" text-anchor="middle" font-size="7" fill="#aaa">Toque (CC)</text>
+    </svg>`;
+  }
+  if(a.includes('Personal')||a.includes('personal')){
+    return `<svg viewBox="0 0 ${s} ${s}" width="80" height="80" style="display:block;">
+      <rect width="${s}" height="${s}" fill="rgba(0,0,0,0.3)" rx="4"/>
+      <circle cx="${C}" cy="${C}" r="12" fill="rgba(78,203,122,0.15)" stroke="rgba(78,203,122,0.6)" stroke-width="1.5"/>
+      ${caster}
+      <text x="${C}" y="${s-4}" text-anchor="middle" font-size="7" fill="#aaa">Personal</text>
+    </svg>`;
+  }
+  // Range attack — show line to target
+  const rangeText = a.split(' ')[0]+' '+a.split(' ')[1];
+  return `<svg viewBox="0 0 ${s} ${s}" width="80" height="80" style="display:block;">
+    <rect width="${s}" height="${s}" fill="rgba(0,0,0,0.3)" rx="4"/>
+    <line x1="${C}" y1="${C}" x2="${C}" y2="${10}" stroke="rgba(255,128,128,0.6)" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+    <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,128,128,0.8)"/></marker></defs>
+    <circle cx="${C}" cy="10" r="5" fill="rgba(255,100,100,0.4)" stroke="rgba(255,100,100,0.8)" stroke-width="1"/>
+    ${caster}
+    <text x="${C}" y="${s-4}" text-anchor="middle" font-size="7" fill="#aaa">${rangeText}</text>
+  </svg>`;
+}
+
+function dmgColor(dano){
+  if(!dano||dano==='—') return 'var(--dim)';
+  if(dano.includes('nec')||dano.includes('Nec')) return '#cc88ff';
+  if(dano.includes('frío')||dano.includes('frio')) return '#80d4ff';
+  if(dano.includes('fuego')||dano.includes('Fuego')) return '#ff8844';
+  if(dano.includes('sónico')||dano.includes('trueno')) return '#aaddff';
+  if(dano.includes('veneno')||dano.includes('Veneno')) return '#88dd66';
+  if(dano.includes('ácido')||dano.includes('acido')) return '#aaee44';
+  if(dano.includes('eléctrico')||dano.includes('rayo')) return '#bbbbff';
+  if(dano.includes('fuerza')||dano.includes('Fuerza')) return '#ddddff';
+  return '#ffcc66';
+}
+
+function spellDetailHTML(spell){
+  const isN1 = spell.nivel==='n1';
+  const hasDmg = spell.dano && spell.dano!=='—';
+  return `
+    ${hasDmg?`<div style="background:rgba(0,0,0,0.3);border:1px solid ${dmgColor(spell.dano)}44;border-radius:8px;padding:10px 14px;margin:10px 0 8px;display:flex;align-items:center;gap:12px;">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;">Daño</div>
+        <div style="font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:${dmgColor(spell.dano)};text-shadow:0 0 12px ${dmgColor(spell.dano)}66;line-height:1;">${spell.dano}</div>
+      </div>
+      <div style="width:1px;height:36px;background:var(--border);"></div>
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;">Cómo lanzar</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--frost);">${spell.tirada}</div>
+      </div>
+    </div>`:`<div style="background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin:10px 0 8px;">
+      <div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:3px;">Cómo lanzar</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--frost);">${spell.tirada}</div>
+    </div>`}
+    <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;margin-bottom:8px;">
+      <div class="srow" style="margin:0;">
+        <div class="sbox"><span class="slabel">Alcance</span><div class="sval" style="font-size:0.7rem;">${spell.alcance}</div></div>
+        <div class="sbox"><span class="slabel">Lanzamiento</span><div class="sval" style="font-size:0.7rem;">${spell.lanzamiento}</div></div>
+        <div class="sbox"><span class="slabel">Duración</span><div class="sval" style="font-size:0.7rem;">${spell.duracion}</div></div>
+        <div class="sbox"><span class="slabel">Comp.</span><div class="sval" style="font-size:0.7rem;">${spell.comp}</div></div>
+      </div>
+      <div>${getAreaSVG(spell)}</div>
+    </div>
+    <div class="sdesc" style="font-size:0.78rem;">${spell.desc}</div>
+    <div class="stip" style="font-size:0.72rem;margin-top:6px;">💡 ${spell.tip}</div>
+    ${isN1?`<button class="use-btn" style="margin-top:8px;" onclick="useSpell('n1');closeSpellSelector()">🔮 Preparar y usar — gasta N1</button>`:''}
+  `;
+}
+
+function renderSpellCard(spell){
+  const tagsHTML = (spell.tags||[]).map(t=>`<span class="tag tag-${t}">${TAG_LABELS[t]||t}</span>`).join('');
+  const isN1 = spell.nivel==='n1';
+  const uid = 'sc-'+spell.id+'-'+Math.random().toString(36).slice(2,6);
+  const hasDmg = spell.dano && spell.dano!=='—';
+  return `<div class="spell-card">
+    <div class="spell-hdr" onclick="document.getElementById('${uid}').classList.toggle('open')">
+      <div class="spell-icon">${spell.icon}</div>
+      <div class="spell-info">
+        <div class="spell-name">${spell.nombre}</div>
+        <div class="tags-row">${tagsHTML}</div>
+        ${hasDmg?`<div style="margin-top:4px;display:flex;align-items:baseline;gap:6px;">
+          <span style="font-family:'Cinzel Decorative',serif;font-size:1rem;color:${dmgColor(spell.dano)};text-shadow:0 0 8px ${dmgColor(spell.dano)}66;">${spell.dano}</span>
+          <span style="font-size:0.65rem;color:var(--dim);">${spell.tirada}</span>
+        </div>`:`<div class="spell-quick" style="margin-top:4px;">${spell.tirada}</div>`}
+      </div>
+    </div>
+    <div class="spell-body" id="${uid}">
+      ${spellDetailHTML(spell)}
+      ${isN1?`<button class="use-btn" onclick="useSpell('n1')">🔮 Usar — gasta espacio N1</button>`:''}
+    </div>
+  </div>`;
+}
+
+function renderPreparedSpells(){
+  const trucoHTML = (PREPARED.truco||[]).filter(id=>SPELLS[id]).map(id=>renderSpellCard(SPELLS[id])).join('');
+  const n1HTML = (PREPARED.n1||[]).filter(id=>SPELLS[id]).map(id=>renderSpellCard(SPELLS[id])).join('');
+  document.getElementById('trucos-list').innerHTML = trucoHTML || '<div style="color:var(--dim);font-size:0.8rem;padding:10px;">Sin trucos preparados — tocá "Cambiar Trucos".</div>';
+  document.getElementById('n1-list').innerHTML = n1HTML || '<div style="color:var(--dim);font-size:0.8rem;padding:10px;">Sin conjuros N1 — tocá "Cambiar Conjuros N1".</div>';
+  document.getElementById('truco-count').textContent = (PREPARED.truco||[]).length+'/'+SPELL_LIMITS.truco;
+  document.getElementById('n1-count').textContent = (PREPARED.n1||[]).length+'/'+SPELL_LIMITS.n1;
+  renderQuickSpells();
+}
+
+// ─── MODAL SELECTOR ─────────────────────────────────────────────
+let currentSelectorType = null;
+let tempSelection = [];
+let expandedModal = null;
+
+function openSpellSelector(type){
+  currentSelectorType = type;
+  tempSelection = [...(PREPARED[type]||[])];
+  expandedModal = null;
+  document.getElementById('modal-title').textContent = type==='truco' ? '❄ Seleccionar Trucos' : '🔮 Seleccionar Conjuros Nivel 1';
+  document.getElementById('modal-max').textContent = SPELL_LIMITS[type];
+  renderModalList();
+  document.getElementById('spell-modal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSpellSelector(){
+  if(currentSelectorType){
+    PREPARED[currentSelectorType] = [...tempSelection];
+    renderPreparedSpells();
+    saveState();
+    toast('✨ Conjuros actualizados — '+PREPARED[currentSelectorType].length+' preparados');
+  }
+  document.getElementById('spell-modal').style.display = 'none';
+  document.body.style.overflow = '';
+  currentSelectorType = null;
+  expandedModal = null;
+}
+
+function toggleModalDetail(id, e){
+  e.stopPropagation();
+  expandedModal = expandedModal===id ? null : id;
+  renderModalList();
+  // Scroll to expanded card
+  setTimeout(()=>{
+    const el = document.getElementById('modal-detail-'+id);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+  },50);
+}
+
+function renderModalList(){
+  const spells = Object.values(SPELLS).filter(s=>s.nivel===currentSelectorType);
+  const max = SPELL_LIMITS[currentSelectorType];
+  const html = spells.map(s=>{
+    const selected = tempSelection.includes(s.id);
+    const disabled = !selected && tempSelection.length>=max;
+    const expanded = expandedModal===s.id;
+    const tagsHTML = (s.tags||[]).map(t=>`<span class="tag tag-${t}" style="font-size:0.5rem;">${TAG_LABELS[t]||t}</span>`).join('');
+    return `<div class="modal-spell ${selected?'selected':''} ${disabled?'disabled':''}" style="flex-direction:column;align-items:stretch;padding:0;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;" onclick="toggleSpellSelection('${s.id}')">
+        <div class="modal-check"></div>
+        <div style="font-size:1.2rem;">${s.icon}</div>
+        <div class="modal-info">
+          <div class="modal-name">${s.nombre}</div>
+          <div class="tags-row" style="margin:3px 0;">${tagsHTML}</div>
+          <div class="modal-quick">${s.quick}</div>
+        </div>
+        <button onclick="toggleModalDetail('${s.id}',event)" style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:0.65rem;padding:4px 8px;cursor:pointer;flex-shrink:0;font-family:'Cinzel',serif;letter-spacing:1px;">${expanded?'▲ CERRAR':'▼ VER MÁS'}</button>
+      </div>
+      ${expanded?`<div id="modal-detail-${s.id}" style="border-top:1px solid var(--border);padding:10px;background:rgba(0,0,0,0.2);">${spellDetailHTML(s)}</div>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('modal-spell-list').innerHTML = html;
+}
+
+function toggleSpellSelection(id){
+  const idx = tempSelection.indexOf(id);
+  const max = SPELL_LIMITS[currentSelectorType];
+  if(idx>=0){
+    tempSelection.splice(idx,1);
+  } else if(tempSelection.length<max){
+    tempSelection.push(id);
+  } else {
+    toast('Máximo '+max+' — deseleccioná uno primero');
+    return;
+  }
+  renderModalList();
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
   const saved=loadState();
   if(saved)applyState(saved);
+  else{inventory=[...DEFAULT_INVENTORY];weapons=DEFAULT_WEAPONS.map(w=>({...w}));renderPreparedSpells();renderQuickSpells();syncCombatBar();renderInventory();renderWeapons();}
   const n=document.querySelector('.notes');
   if(n)n.addEventListener('input',saveState);
+  const nameEl=document.getElementById('char-name-input');
+  if(nameEl)nameEl.addEventListener('input',saveState);
 });
 
 function showPage(id,btn){
@@ -745,44 +1794,91 @@ function changeHP(delta){
 
 function toggleSlot(el,level){
   el.classList.toggle('used');
-  const dots=document.querySelectorAll('#slots-'+level+' .slot-dot');
-  const avail=[...dots].filter(d=>!d.classList.contains('used')).length;
+  // Clear history for this slot if manually toggled off
+  const dots=[...document.querySelectorAll('#slots-'+level+' .slot-dot')];
+  const idx=dots.indexOf(el);
+  if(!el.classList.contains('used')&&idx>=0) slotHistory[idx]=null;
+  const avail=dots.filter(d=>!d.classList.contains('used')).length;
   document.getElementById('slots-'+level+'-count').textContent=avail+' / '+dots.length;
   if(avail===0)toast('Sin espacios de nivel 1 — descansá para recuperarlos');
-  saveState();
+  renderSlots();
+  syncCombatBar();saveState();
 }
 
 function toggleSP(el){
   el.classList.toggle('used');
   const dots=document.querySelectorAll('#sp-dots .sp-dot');
   document.getElementById('sp-count').textContent=[...dots].filter(d=>!d.classList.contains('used')).length+' / '+dots.length;
-  saveState();
+  syncCombatBar();saveState();
 }
 
 function useSpell(level){
   const dots=document.querySelectorAll('#slots-'+level+' .slot-dot');
   const avail=[...dots].find(d=>!d.classList.contains('used'));
-  if(avail){avail.classList.add('used');const a=[...dots].filter(d=>!d.classList.contains('used')).length;document.getElementById('slots-'+level+'-count').textContent=a+' / '+dots.length;toast('✨ Espacio N1 gastado — quedan '+a);saveState();}
+  if(avail){avail.classList.add('used');const a=[...dots].filter(d=>!d.classList.contains('used')).length;document.getElementById('slots-'+level+'-count').textContent=a+' / '+dots.length;toast('✨ Espacio N1 gastado — quedan '+a);syncCombatBar();saveState();}
   else toast('❌ Sin espacios de nivel 1 disponibles');
 }
 
 function resetResources(){
   document.querySelectorAll('.slot-dot').forEach(d=>d.classList.remove('used'));
   document.querySelectorAll('.sp-dot').forEach(d=>d.classList.remove('used'));
+  slotHistory=[null,null,null];
+  turnUsed={};
   document.getElementById('hp-val').textContent=19;updateHPBar(19);
   document.getElementById('slots-n1-count').textContent='3 / 3';
   document.getElementById('sp-count').textContent='2 / 2';
-  toast('✅ Descanso Largo — recursos recuperados');saveState();
+  currentRound=1;
+  syncCombatBar();
+  renderSlots();
+  renderQuickSpells();
+  toast('✅ Descanso Largo — podés cambiar conjuros preparados');saveState();
 }
 
 function fullReset(){
-  if(!confirm('¿Reiniciar TODO? Se borran PG, recursos, monedas y notas.'))return;
+  if(!confirm('¿Reiniciar TODO? Se borran PG, asaltos, recursos, monedas, notas e inventario.'))return;
   try{localStorage.removeItem('hechicero_state');}catch(e){}
-  applyState(DEFAULT);
+
+  // Reset all state vars
+  PREPARED={truco:[...DEFAULT.prepared.truco],n1:[...DEFAULT.prepared.n1]};
+  inventory=[...DEFAULT_INVENTORY];
+  weapons=DEFAULT_WEAPONS.map(w=>({...w}));
+  turnUsed={};
+  slotHistory=[null,null,null];
+  currentRound=1;
+
+  // Reset HP
+  document.getElementById('hp-val').textContent=19;
+  updateHPBar(19);
+
+  // Clear ALL dots manually
+  document.querySelectorAll('.slot-dot').forEach(d=>d.classList.remove('used'));
+  document.querySelectorAll('.sp-dot').forEach(d=>d.classList.remove('used'));
+  document.querySelectorAll('.cb-slot').forEach(d=>d.classList.remove('used'));
+  document.querySelectorAll('.cb-sp').forEach(d=>d.classList.remove('used'));
+  document.querySelectorAll('.ds-dot').forEach(d=>d.classList.remove('f'));
+
+  // Reset counts
+  document.getElementById('slots-n1-count').textContent='3 / 3';
+  document.getElementById('sp-count').textContent='2 / 2';
+
+  // Reset coins and notes
   document.getElementById('gold-val').textContent=0;
   document.getElementById('silver-val').textContent=0;
   document.getElementById('copper-val').textContent=0;
   const n=document.querySelector('.notes');if(n)n.value='';
+
+  // Reset name
+  const nameEl=document.getElementById('char-name-input');
+  if(nameEl)nameEl.value='';
+
+  // Sync and render everything
+  syncCombatBar();
+  renderSlots();
+  renderQuickSpells();
+  renderPreparedSpells();
+  renderInventory();
+  renderWeapons();
+  saveState();
   toast('🔄 Partida reiniciada desde cero');
 }
 
@@ -802,13 +1898,404 @@ function changeCoin(type,delta){
   saveState();
 }
 
-function toggleSpell(id){document.getElementById('spell-'+id).classList.toggle('open');}
+function rollDice(sides, bonus, label){
+  const roll = Math.floor(Math.random()*sides)+1;
+  const total = roll + bonus;
+  const isCrit = sides===20 && roll===20;
+  const isFail = sides===20 && roll===1;
+  const el = document.getElementById('dice-result');
+  el.style.display='block';
+  document.getElementById('dice-label').textContent = label;
+  document.getElementById('dice-rolls').textContent = `d${sides}: ${roll}${bonus?` + ${bonus}`:''}`;
+  const totalEl = document.getElementById('dice-total');
+  totalEl.textContent = total;
+  totalEl.style.color = isCrit?'#4ecb7a':isFail?'#e05555':'var(--accent)';
+  totalEl.style.textShadow = isCrit?'0 0 20px #4ecb7a':isFail?'0 0 20px #e05555':'0 0 20px var(--accent)';
+  document.getElementById('dice-breakdown').textContent = isCrit?'🌟 CRÍTICO!':(isFail?'💀 PIFIA!':'');
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function rollMultiDice(groups, label){
+  // groups: [[count,sides,bonus?], ...]
+  // Special case: [[3,4,3]] = 3 darts of 1d4+1
+  let html = '';
+  let total = 0;
+  let breakdown = '';
+  if(label.includes('Proy')){
+    // 3 darts of 1d4+1
+    const rolls = [1,2,3].map(()=>Math.floor(Math.random()*4)+1+1);
+    total = rolls.reduce((a,b)=>a+b,0);
+    breakdown = 'Dardos: '+rolls.map((r,i)=>`#${i+1}: ${r}`).join(' · ');
+    html = rolls.join(' + ');
+  } else {
+    // Area: show all three options
+    const results = groups.map(([c,s])=>{
+      const rolls = Array.from({length:c},()=>Math.floor(Math.random()*s)+1);
+      return {label:`${c}d${s}`,sum:rolls.reduce((a,b)=>a+b,0),rolls};
+    });
+    total = results[0].sum; // show first by default
+    html = results.map(r=>`${r.label}=${r.sum}`).join(' · ');
+    breakdown = 'Elegí el conjuro que usaste';
+  }
+  const el = document.getElementById('dice-result');
+  el.style.display='block';
+  document.getElementById('dice-label').textContent = label;
+  document.getElementById('dice-rolls').textContent = html;
+  const totalEl = document.getElementById('dice-total');
+  totalEl.textContent = label.includes('Proy')?total:'— ver arriba';
+  totalEl.style.color = 'var(--accent)';
+  totalEl.style.textShadow = '0 0 20px var(--accent)';
+  document.getElementById('dice-breakdown').textContent = breakdown;
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 
 function toast(msg){
   const el=document.getElementById('toast');
   el.textContent=msg;el.classList.add('show');
   clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3000);
 }
+
+// ─── INVENTARIO ─────────────────────────────────────────────────
+const CAT_COLORS={
+  general:  {bg:'rgba(106,158,184,0.1)',border:'rgba(106,158,184,0.3)',color:'var(--dim)'},
+  consumible:{bg:'rgba(78,203,122,0.1)', border:'rgba(78,203,122,0.3)', color:'var(--safe)'},
+  magico:   {bg:'rgba(0,207,255,0.08)', border:'rgba(0,207,255,0.25)', color:'var(--accent)'},
+  quest:    {bg:'rgba(200,168,75,0.1)', border:'rgba(200,168,75,0.3)', color:'var(--gold)'},
+  herramienta:{bg:'rgba(180,140,100,0.1)',border:'rgba(180,140,100,0.3)',color:'#b48c64'},
+};
+const CAT_LABELS={general:'General',consumible:'Consumible',magico:'✨ Mágico',quest:'📜 Quest',herramienta:'🔨 Herramienta'};
+const ICON_OPTIONS=['🎒','📦','🗡','🏹','🪵','🛡','⚗','🧪','🍖','🥤','🧴','🪢','🕯','🔥','🪶','📜','💎','🪙','🗝','🔑','🧲','🌿','🍄','💊','🧿','📿','🎭','👝','🎁','🔮','⚡','❄','🌀','🩹','🍞','⛽','👘','🥾','🛏','🍱','🍳','🔪','🎯'];
+
+let inventory=[];
+let editingItemIdx=null;
+
+const DEFAULT_INVENTORY=[
+  {icon:'🛏',name:'Saco de dormir',qty:'',note:'',cat:'general',used:false},
+  {icon:'🍳',name:'Equipo de cocina',qty:'',note:'',cat:'herramienta',used:false},
+  {icon:'🔥',name:'Yesquero',qty:'',note:'',cat:'herramienta',used:false},
+  {icon:'🕯',name:'Antorchas',qty:'×10',qtyNum:10,note:'',cat:'general',used:false},
+  {icon:'🍱',name:'Raciones de viaje',qty:'×10 días',qtyNum:10,note:'',cat:'consumible',used:false},
+  {icon:'🧴',name:'Odre de agua',qty:'×1',qtyNum:1,note:'',cat:'general',used:false},
+  {icon:'🪢',name:'Cuerda de cáñamo',qty:'50 pies',note:'',cat:'general',used:false},
+  {icon:'🪶',name:'Pluma + tintero',qty:'',note:'',cat:'herramienta',used:false},
+  {icon:'🔪',name:'Cuchillo pequeño',qty:'',note:'',cat:'general',used:false},
+  {icon:'📜',name:'Carta sin leer',qty:'',note:'Remitente desconocido',cat:'quest',used:false},
+  {icon:'👘',name:'Ropa común',qty:'',note:'',cat:'general',used:false},
+  {icon:'🥾',name:'Par de botas',qty:'',note:'',cat:'general',used:false},
+  {icon:'👝',name:'Bolsa de componentes',qty:'',note:'',cat:'herramienta',used:false},
+  {icon:'⛽',name:'2 de gas',qty:'×2',qtyNum:2,note:'',cat:'general',used:false},
+];
+
+// Parse numeric quantity from strings like "×10", "10", "×3 días", "50 pies"
+function parseQty(qty){
+  if(!qty) return null;
+  const m = qty.match(/^[×x]?(\d+)/);
+  return m ? parseInt(m[1]) : null;
+}
+function formatQty(item){
+  if(item.qtyNum===undefined||item.qtyNum===null) return item.qty||'';
+  const suffix = (item.qty||'').replace(/^[×x]?\d+\s*/,'');
+  return (item.qtyNum>0?'×'+item.qtyNum:'0') + (suffix?' '+suffix:'');
+}
+
+function changeQty(i, delta){
+  const item = inventory[i];
+  if(item.qtyNum===undefined||item.qtyNum===null) return;
+  item.qtyNum = Math.max(0, item.qtyNum + delta);
+  item.used = item.qtyNum === 0;
+  renderInventory();
+  saveState();
+  if(item.qtyNum===0) toast('⚠ '+item.name+' — agotado');
+}
+
+function renderInventory(){
+  const list=document.getElementById('inventory-list');
+  const empty=document.getElementById('inventory-empty');
+  if(!list)return;
+  if(!inventory.length){list.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  const cats=['consumible','magico','quest','herramienta','general'];
+  let html='';
+  cats.forEach(cat=>{
+    const items=inventory.map((item,i)=>({...item,i})).filter(item=>item.cat===cat);
+    if(!items.length)return;
+    html+=`<div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin:10px 0 5px;padding-bottom:4px;border-bottom:1px solid var(--border);">${CAT_LABELS[cat]}</div>`;
+    items.forEach(item=>{
+      const c=CAT_COLORS[item.cat]||CAT_COLORS.general;
+      const usedStyle=item.used?'opacity:0.4;':'';
+      const hasNum = item.qtyNum!==undefined && item.qtyNum!==null;
+      const qtyDisplay = hasNum ? formatQty(item) : (item.qty||'');
+      const qtyColor = hasNum && item.qtyNum<=2 ? 'var(--danger)' : c.color;
+
+      // Counter or toggle button
+      const rightControls = hasNum
+        ? `<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+            <button onclick="changeQty(${item.i},-1)" style="width:28px;height:28px;border-radius:5px;border:1px solid var(--danger);background:rgba(224,85,85,0.08);color:var(--danger);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;">−</button>
+            <div style="font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:${qtyColor};min-width:24px;text-align:center;line-height:1;">${item.qtyNum}</div>
+            <button onclick="changeQty(${item.i},1)" style="width:28px;height:28px;border-radius:5px;border:1px solid var(--safe);background:rgba(78,203,122,0.08);color:var(--safe);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;">+</button>
+            <button onclick="openEditItem(${item.i})" style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:0.7rem;padding:4px 7px;cursor:pointer;margin-left:2px;">✎</button>
+           </div>`
+        : `<div style="display:flex;gap:4px;flex-shrink:0;">
+            <button onclick="toggleUsed(${item.i})" style="background:none;border:1px solid ${item.used?'var(--safe)':'var(--border)'};border-radius:4px;color:${item.used?'var(--safe)':'var(--dim)'};font-size:0.7rem;padding:4px 7px;cursor:pointer;">${item.used?'↺':'✓'}</button>
+            <button onclick="openEditItem(${item.i})" style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:0.7rem;padding:4px 7px;cursor:pointer;">✎</button>
+           </div>`;
+
+      html+=`<div style="background:${c.bg};border:1px solid ${item.used&&item.qtyNum===0?'var(--danger)':c.border};border-radius:8px;padding:9px 12px;margin-bottom:5px;display:flex;align-items:center;gap:10px;${usedStyle}transition:all 0.2s;">
+        <div style="font-size:1.2rem;flex-shrink:0;">${item.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span style="font-family:'Cinzel',serif;font-size:0.78rem;color:${item.used?'var(--dim)':'var(--frost)'};${item.used?'text-decoration:line-through;':''}">${item.name}</span>
+            ${qtyDisplay&&!hasNum?`<span style="font-size:0.7rem;color:${qtyColor};font-family:'Cinzel',serif;font-weight:600;">${qtyDisplay}</span>`:''}
+            ${hasNum&&(item.qty||'').replace(/^[×x]?\d+\s*/,'')? `<span style="font-size:0.68rem;color:var(--dim);">${(item.qty||'').replace(/^[×x]?\d+\s*/,'')}</span>`:''}
+          </div>
+          ${item.note?`<div style="font-size:0.7rem;color:var(--dim);margin-top:2px;font-style:italic;">${item.note}</div>`:''}
+        </div>
+        ${rightControls}
+      </div>`;
+    });
+  });
+  list.innerHTML=html;
+}
+
+function toggleUsed(i){
+  inventory[i].used=!inventory[i].used;
+  renderInventory();saveState();
+}
+
+function openAddItem(){
+  editingItemIdx=null;
+  document.getElementById('item-modal-title').textContent='+ Agregar Item';
+  document.getElementById('item-icon').value='📦';
+  document.getElementById('item-name').value='';
+  document.getElementById('item-qty').value='';
+  document.getElementById('item-note').value='';
+  document.getElementById('item-cat').value='general';
+  document.getElementById('item-delete-btn').style.display='none';
+  renderIconPicker('📦');
+  document.getElementById('item-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('item-name').focus(),100);
+}
+
+function openEditItem(i){
+  editingItemIdx=i;
+  const item=inventory[i];
+  document.getElementById('item-modal-title').textContent='✎ Editar Item';
+  document.getElementById('item-icon').value=item.icon;
+  document.getElementById('item-name').value=item.name;
+  document.getElementById('item-qty').value=item.qty||'';
+  document.getElementById('item-note').value=item.note||'';
+  document.getElementById('item-cat').value=item.cat||'general';
+  document.getElementById('item-delete-btn').style.display='inline-flex';
+  renderIconPicker(item.icon);
+  document.getElementById('item-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function renderIconPicker(selected){
+  const picker=document.getElementById('icon-picker');
+  if(!picker)return;
+  picker.innerHTML=ICON_OPTIONS.map(ic=>
+    `<button onclick="selectIcon('${ic}')" style="font-size:1.2rem;background:${ic===selected?'rgba(0,207,255,0.2)':'transparent'};border:1px solid ${ic===selected?'var(--accent)':'var(--border)'};border-radius:6px;padding:4px;cursor:pointer;transition:all 0.15s;width:36px;height:36px;">${ic}</button>`
+  ).join('');
+}
+
+function selectIcon(ic){
+  document.getElementById('item-icon').value=ic;
+  document.querySelectorAll('#icon-picker button').forEach(b=>{
+    const sel=b.textContent.trim()===ic;
+    b.style.background=sel?'rgba(0,207,255,0.2)':'transparent';
+    b.style.borderColor=sel?'var(--accent)':'var(--border)';
+  });
+}
+
+function saveItem(){
+  const name=document.getElementById('item-name').value.trim();
+  if(!name){toast('⚠ El nombre es obligatorio');return;}
+  const qtyRaw=document.getElementById('item-qty').value.trim();
+  const num=parseQty(qtyRaw);
+  const item={
+    icon:document.getElementById('item-icon').value||'📦',
+    name,
+    qty:qtyRaw,
+    qtyNum:num!==null?num:undefined,
+    note:document.getElementById('item-note').value.trim(),
+    cat:document.getElementById('item-cat').value,
+    used:editingItemIdx!==null?inventory[editingItemIdx].used:false,
+  };
+  // If numeric qty changed, update qtyNum but preserve used state logic
+  if(num!==null) item.used = num===0;
+  if(editingItemIdx!==null)inventory[editingItemIdx]=item;
+  else inventory.push(item);
+  closeItemModal();
+  renderInventory();
+  saveState();
+  toast(editingItemIdx!==null?'✎ Item actualizado':'✓ Item agregado');
+}
+
+function deleteItem(){
+  if(editingItemIdx===null)return;
+  if(!confirm('¿Borrar este item?'))return;
+  inventory.splice(editingItemIdx,1);
+  closeItemModal();
+  renderInventory();
+  saveState();
+  toast('🗑 Item eliminado');
+}
+
+// ─── ARMAS ──────────────────────────────────────────────────────
+let weapons=[];
+let editingWeaponIdx=null;
+
+const DEFAULT_WEAPONS=[
+  {icon:'🗡',name:'Daga',atk:'+5',dmg:'1d4+3',range:'CC / arrojadiza 20/60 pies',ammo:null,ammoName:'',
+   tags:['Perforante','Finura','Lanzadiza','Ligera'],
+   desc:'Arma versátil. Finura: usás Des (+3) para atacar. Lanzadiza: podés arrojarla 20 pies normal / 60 pies con desventaja. Ligera: podés usarla en la mano secundaria.'},
+  {icon:'🏹',name:'Ballesta Ligera',atk:'+5',dmg:'1d8+3',range:'80/320 pies · 2 manos',ammo:20,ammoName:'Virotes',
+   tags:['Perforante','A distancia','2 manos','Munición'],
+   desc:'Requiere 2 manos y munición. Alcance normal 80 pies (sin penalización), hasta 320 pies con desventaja. Recargar cuesta 1 acción — solo 1 disparo por turno.'},
+  {icon:'🪵',name:'Gran Clava (2M)',atk:'+2',dmg:'1d8',range:'Cuerpo a cuerpo',ammo:null,ammoName:'',
+   tags:['Contundente','2 manos'],
+   desc:'Arma de cuerpo a cuerpo que requiere 2 manos. Daño contundente — efectivo contra esqueletos y armaduras. Sin bonus de Des ni Fue porque tus mods son bajos.'},
+];
+
+const WPN_TAG_COLORS={
+  'Perforante':'rgba(255,150,100,0.15)',
+  'Contundente':'rgba(180,130,80,0.15)',
+  'Cortante':'rgba(220,80,80,0.15)',
+  'A distancia':'rgba(100,180,255,0.12)',
+  'Finura':'rgba(170,130,220,0.15)',
+  'Lanzadiza':'rgba(100,200,180,0.12)',
+  'Ligera':'rgba(150,220,150,0.12)',
+  '2 manos':'rgba(200,150,80,0.12)',
+  'Munición':'rgba(200,200,100,0.12)',
+  'Versátil':'rgba(100,200,255,0.12)',
+};
+const WPN_TAG_TEXT={
+  'Perforante':'#ffaa77','Contundente':'#c8a050','Cortante':'#ff8080',
+  'A distancia':'#80c8ff','Finura':'#bb99ee','Lanzadiza':'#80d4c8',
+  'Ligera':'#90e090','2 manos':'#e0b870','Munición':'#e0e070','Versátil':'#80d4ff',
+};
+
+function renderWeapons(){
+  const list=document.getElementById('weapons-list');
+  if(!list)return;
+  list.innerHTML=weapons.map((w,i)=>{
+    const hasAmmo=w.ammo!==null&&w.ammo!==undefined;
+    const ammoColor=hasAmmo&&w.ammo<=3?'var(--danger)':hasAmmo&&w.ammo<=8?'var(--warn)':'var(--safe)';
+    const tags=(w.tags||[]).map(t=>`<span style="font-size:0.52rem;padding:2px 7px;border-radius:8px;background:${WPN_TAG_COLORS[t]||'rgba(150,150,150,0.1)'};border:1px solid rgba(255,255,255,0.1);color:${WPN_TAG_TEXT[t]||'#aaa'};font-family:'Cinzel',serif;letter-spacing:1px;text-transform:uppercase;">${t}</span>`).join('');
+    const uid='wpn-detail-'+i;
+    return `<div style="background:rgba(224,85,85,0.06);border:1px solid rgba(224,85,85,0.2);border-radius:8px;margin-bottom:6px;overflow:hidden;">
+      <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;">
+        <div style="font-size:1.3rem;flex-shrink:0;">${w.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+            <span style="font-family:'Cinzel',serif;font-size:0.85rem;color:var(--frost);">${w.name}</span>
+            <span style="font-family:'Cinzel',serif;font-size:0.8rem;color:var(--accent);font-weight:700;">${w.atk}</span>
+            <span style="font-size:0.75rem;color:#ffaa44;font-weight:600;">${w.dmg} <span style="color:var(--dim);font-size:0.65rem;">${(w.tags||[]).find(t=>['Perforante','Contundente','Cortante'].includes(t))||''}</span></span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;">${tags}</div>
+          <div style="font-size:0.68rem;color:var(--dim);">📍 ${w.range}</div>
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0;">
+          <button onclick="document.getElementById('${uid}').style.display=document.getElementById('${uid}').style.display==='none'?'block':'none'" style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:0.65rem;padding:4px 7px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;">▼</button>
+          <button onclick="openEditWeapon(${i})" style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:0.7rem;padding:4px 7px;cursor:pointer;">✎</button>
+        </div>
+      </div>
+      ${hasAmmo?`<div style="padding:0 12px 10px;display:flex;align-items:center;gap:6px;">
+        <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:1px;color:var(--dim);text-transform:uppercase;">${w.ammoName||'Munición'}:</span>
+        <button onclick="changeAmmo(${i},-1)" style="width:26px;height:26px;border-radius:5px;border:1px solid var(--danger);background:rgba(224,85,85,0.08);color:var(--danger);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;">−</button>
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.2rem;color:${ammoColor};min-width:28px;text-align:center;">${w.ammo}</span>
+        <button onclick="changeAmmo(${i},1)" style="width:26px;height:26px;border-radius:5px;border:1px solid var(--safe);background:rgba(78,203,122,0.08);color:var(--safe);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;">+</button>
+        ${w.ammo<=3?`<span style="font-size:0.68rem;color:var(--danger);font-style:italic;">⚠ Quedan pocos</span>`:''}
+      </div>`:''}
+      <div id="${uid}" style="display:none;padding:0 12px 12px;border-top:1px solid rgba(224,85,85,0.15);">
+        <div style="font-size:0.78rem;color:var(--dim);line-height:1.6;margin-top:8px;">${w.desc||'Sin descripción.'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function changeAmmo(i,delta){
+  weapons[i].ammo=Math.max(0,weapons[i].ammo+delta);
+  renderWeapons();saveState();
+  if(weapons[i].ammo===0)toast('⚠ '+weapons[i].name+' — sin munición');
+  else if(weapons[i].ammo<=3)toast('⚠ Quedan solo '+weapons[i].ammo+' '+weapons[i].ammoName);
+}
+
+function openAddWeapon(){
+  editingWeaponIdx=null;
+  document.getElementById('weapon-modal-title').textContent='⚔ Agregar Arma';
+  document.getElementById('wpn-icon').value='🗡';
+  document.getElementById('wpn-name').value='';
+  document.getElementById('wpn-atk').value='';
+  document.getElementById('wpn-dmg').value='';
+  document.getElementById('wpn-range').value='';
+  document.getElementById('wpn-ammo').value='';
+  document.getElementById('wpn-ammo-name').value='';
+  document.getElementById('wpn-tags').value='';
+  document.getElementById('wpn-desc').value='';
+  document.getElementById('wpn-delete-btn').style.display='none';
+  document.getElementById('weapon-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('wpn-name').focus(),100);
+}
+
+function openEditWeapon(i){
+  editingWeaponIdx=i;
+  const w=weapons[i];
+  document.getElementById('weapon-modal-title').textContent='⚔ Editar Arma';
+  document.getElementById('wpn-icon').value=w.icon;
+  document.getElementById('wpn-name').value=w.name;
+  document.getElementById('wpn-atk').value=w.atk;
+  document.getElementById('wpn-dmg').value=w.dmg;
+  document.getElementById('wpn-range').value=w.range;
+  document.getElementById('wpn-ammo').value=w.ammo!==null&&w.ammo!==undefined?w.ammo:'';
+  document.getElementById('wpn-ammo-name').value=w.ammoName||'';
+  document.getElementById('wpn-tags').value=(w.tags||[]).join(', ');
+  document.getElementById('wpn-desc').value=w.desc||'';
+  document.getElementById('wpn-delete-btn').style.display='inline-flex';
+  document.getElementById('weapon-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function saveWeapon(){
+  const name=document.getElementById('wpn-name').value.trim();
+  if(!name){toast('⚠ El nombre es obligatorio');return;}
+  const ammoRaw=document.getElementById('wpn-ammo').value.trim();
+  const ammoNum=ammoRaw!==''?parseInt(ammoRaw):null;
+  const tagsRaw=document.getElementById('wpn-tags').value.trim();
+  const w={
+    icon:document.getElementById('wpn-icon').value||'🗡',
+    name,
+    atk:document.getElementById('wpn-atk').value.trim(),
+    dmg:document.getElementById('wpn-dmg').value.trim(),
+    range:document.getElementById('wpn-range').value.trim(),
+    ammo:isNaN(ammoNum)?null:ammoNum,
+    ammoName:document.getElementById('wpn-ammo-name').value.trim(),
+    tags:tagsRaw?tagsRaw.split(',').map(t=>t.trim()).filter(Boolean):[],
+    desc:document.getElementById('wpn-desc').value.trim(),
+  };
+  if(editingWeaponIdx!==null)weapons[editingWeaponIdx]=w;
+  else weapons.push(w);
+  closeWeaponModal();renderWeapons();saveState();
+  toast(editingWeaponIdx!==null?'✎ Arma actualizada':'⚔ Arma agregada');
+}
+
+function deleteWeapon(){
+  if(editingWeaponIdx===null)return;
+  if(!confirm('¿Borrar esta arma?'))return;
+  weapons.splice(editingWeaponIdx,1);
+  closeWeaponModal();renderWeapons();saveState();
+  toast('🗑 Arma eliminada');
+}
+
+function closeWeaponModal(){
+  document.getElementById('weapon-modal').style.display='none';
+  document.body.style.overflow='';
+  editingWeaponIdx=null;
+}
+
 </script>
 </body>
 </html>
